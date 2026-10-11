@@ -1,19 +1,1053 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Barber Studio, barber shop s online rezerváciou</title>
-  <meta name="description" content="Barber Studio: pánske strihy, úprava brady a holenie britvou. Pozrite si cenník, vyberte si barbera a rezervujte termín online.">
-  <meta name="theme-color" content="#2a211b">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a211b'/%3E%3Crect x='11' y='5' width='10' height='22' rx='5' fill='%23f2a05a'/%3E%3Cpath d='M11 11l10-4M11 17l10-4M11 23l10-4' stroke='%232a211b' stroke-width='2.4'/%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
-  <link rel="stylesheet" href="css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2a211b">
+<meta name="description" content="Barber Studio: pánske strihy, úprava brady a holenie britvou. Cenník, barberi a online rezervácia termínu.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a211b'/%3E%3Crect x='11' y='5' width='10' height='22' rx='5' fill='%23f2a05a'/%3E%3Cpath d='M11 11l10-4M11 17l10-4M11 23l10-4' stroke='%232a211b' stroke-width='2.4'/%3E%3C/svg%3E">
+<title>Barber Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
+<style>
+:root { color-scheme: dark; }
+/* ==========================================================================
+   Barber Studio – štýly
+   Pásy sa striedajú: tmavohnedá, béžová a biela. Akcent je oranžový.
+   Farby sekcií riadia "témy" (.theme-dark, .theme-beige, .theme-white), ktoré
+   prepisujú sémantické premenné, preto komponenty fungujú na každom pozadí.
+   Písma sú systémové (bez sťahovania externých fontov).
+   ========================================================================== */
+
+/* ---------- Tokeny ---------- */
+:root {
+  --brown-950: #1d1612;
+  --brown-900: #2a211b;
+  --brown-800: #3a2f28;
+  --brown-700: #4a3f38;
+  --beige: #e9dfd0;
+  --cream: #f3ece0;
+  --orange: #f2a05a;
+  --orange-600: #e48a3c;
+  --orange-ink: #2a1a0c;
+
+  --font-body: "DM Sans", "Avenir Next", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  /* úzke písmo na nadpisy; ak nie je k dispozícii, nastúpi bežné hrubé písmo */
+  --font-display: "Oswald", "Bebas Neue", "Roboto Condensed", "Arial Narrow", "Avenir Next Condensed", "Haettenschweiler", Impact, var(--font-body);
+
+  --gutter: clamp(16px, 4vw, 32px);
+  --header-h: 76px;
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  /* sémantické premenné (predvolene béžový pás) */
+  --bg: var(--beige);
+  --text: #231c17;
+  --muted: #65594e;
+  --line: rgba(35, 28, 23, 0.16);
+  --line-strong: rgba(35, 28, 23, 0.34);
+  --surface: #ffffff;
+  --field-bg: #ffffff;
+  --field-border: rgba(35, 28, 23, 0.38);
+  --error: #a23a2c;
+  --focus: #1d1612;
+  --avatar-bg: #d9cdbb;
+  /* Voliteľná fotografia do hero: --hero-photo: url("../images/hero.jpg"); */
+  --hero-photo: none;
+}
+
+.theme-beige { --bg: var(--beige); }
+
+.theme-white {
+  --bg: #ffffff;
+  --surface: var(--cream);
+  --field-bg: #ffffff;
+  --avatar-bg: #e4d9c7;
+}
+
+.theme-dark {
+  --bg: var(--brown-700);
+  --text: #f6efe5;
+  --muted: #d3c8ba;
+  --line: rgba(255, 255, 255, 0.16);
+  --line-strong: rgba(255, 255, 255, 0.34);
+  --surface: rgba(255, 255, 255, 0.07);
+  --field-bg: rgba(0, 0, 0, 0.24);
+  --field-border: rgba(255, 255, 255, 0.34);
+  --error: #ffb7a8;
+  --focus: #ffd2a1;
+}
+
+/* ---------- Základ ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 8px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--brown-950);
+  color: #f6efe5;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+[hidden] { display: none !important; }
+
+img, svg, iframe { max-width: 100%; }
+
+h1, h2, h3, h4 { margin: 0; line-height: 1.1; }
+p { margin: 0 0 1em; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-underline-offset: 3px; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.container {
+  width: min(1180px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px; top: -64px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--orange);
+  color: var(--orange-ink);
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  transition: top 0.15s;
+}
+.skip-link:focus { top: 12px; }
+
+.noscript-note {
+  margin: 0;
+  padding: 88px var(--gutter) 16px;
+  background: #b5483a;
+  color: #fff;
+  text-align: center;
+}
+
+/* Nadpisy v úzkom písme */
+.hero h1,
+.section h2,
+.featured h3,
+.slip h3,
+.confirmation h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.section h2 {
+  font-size: clamp(2.3rem, 1.5rem + 3vw, 3.7rem);
+  line-height: 1.02;
+  font-weight: 600;
+}
+
+/* ---------- Tlačidlá ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 26px;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.btn-orange { background: var(--orange); color: var(--orange-ink); }
+.btn-orange:hover { background: var(--orange-600); color: var(--orange-ink); }
+
+.btn-dark { background: var(--brown-900); color: #fff; }
+.btn-dark:hover { background: var(--brown-700); color: #fff; }
+
+.btn-ghost { border-color: var(--line-strong); color: var(--text); }
+.btn-ghost:hover { border-color: var(--text); }
+
+.btn-outline-light { border-color: rgba(255, 255, 255, 0.55); color: #fff; }
+.btn-outline-light:hover { background: rgba(255, 255, 255, 0.14); border-color: #fff; }
+
+.btn-danger { border-color: #b5483a; color: #9b3a2d; }
+.btn-danger:hover { background: #b5483a; color: #fff; }
+
+.btn-small { min-height: 40px; padding: 0 18px; font-size: 0.95rem; }
+.btn-large { min-height: 58px; padding: 0 34px; font-size: 1.08rem; }
+.btn-block { width: 100%; }
+
+.link-button {
+  /* väčšia dotyková plocha bez zmeny rozloženia textu */
+  padding: 10px 2px;
+  margin: -10px -2px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.link-button:hover { text-decoration-thickness: 2px; }
+
+/* ---------- Hlavička a navigácia ---------- */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+.site-header.is-scrolled {
+  background: rgba(29, 22, 18, 0.94);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-h);
+  gap: 16px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+}
+.brand-pole { width: 22px; height: 36px; flex: none; }
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.site-nav { display: flex; align-items: center; gap: 14px; }
+
+/* navigácia v tvare pílulky */
+.site-nav ul {
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+}
+.site-nav li a {
+  display: block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: var(--brown-900);
+  font-weight: 650;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+.site-nav li a:hover { background: rgba(42, 33, 27, 0.09); }
+.site-nav li a.is-active { background: var(--brown-900); color: #fff; }
+
+.nav-toggle {
+  display: none;
+  width: 48px; height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+.nav-toggle-bars,
+.nav-toggle-bars::before,
+.nav-toggle-bars::after {
+  display: block;
+  width: 20px; height: 2px;
+  background: #fff;
+  transition: transform 0.2s, background-color 0.2s;
+}
+.nav-toggle-bars { position: relative; }
+.nav-toggle-bars::before, .nav-toggle-bars::after { content: ""; position: absolute; left: 0; }
+.nav-toggle-bars::before { top: -7px; }
+.nav-toggle-bars::after { top: 7px; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  padding: calc(var(--header-h) + 36px) 0 clamp(40px, 6vw, 72px);
+  color: var(--text);
+  /* Voliteľná fotografia: stačí vložiť images/hero.jpg. Bez nej sa zobrazí tmavé pozadie so svetlami. */
+  background-color: var(--brown-950);
+  background-image:
+    linear-gradient(90deg, rgba(20, 14, 10, 0.78) 0%, rgba(20, 14, 10, 0.4) 60%, rgba(20, 14, 10, 0.25) 100%),
+    var(--hero-photo),
+    linear-gradient(180deg, #1d1612 0%, #2f251e 100%);
+  background-size: cover;
+  background-position: center;
+}
+
+/* rozmazané svetlá (náhrada za fotografiu) */
+.hero-lights {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 56% 14%, rgba(255, 186, 110, 0.55) 0, rgba(255, 186, 110, 0.16) 34px, transparent 80px),
+    radial-gradient(circle at 70% 9%, rgba(255, 186, 110, 0.5) 0, rgba(255, 186, 110, 0.14) 30px, transparent 74px),
+    radial-gradient(circle at 86% 18%, rgba(255, 186, 110, 0.4) 0, rgba(255, 186, 110, 0.12) 26px, transparent 66px),
+    radial-gradient(ellipse 50% 60% at 62% 38%, rgba(242, 160, 90, 0.16), transparent 70%);
+}
+
+.hero-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr) minmax(0, 640px);
+  grid-template-areas:
+    "quick .     ."
+    "lead  .    headline";
+  align-content: space-between;
+  gap: 40px clamp(24px, 4vw, 64px);
+  width: min(1180px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+/* priesvitná rezervačná karta */
+.quick {
+  grid-area: quick;
+  align-self: start;
+  padding: 26px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 22px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.quick-title {
+  margin: 0 0 18px;
+  font-family: var(--font-body);
+  font-size: 1.45rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: #fff;
+}
+.quick-fields { display: grid; gap: 10px; margin-bottom: 14px; }
+
+.next-slot { margin-top: 20px; padding-top: 18px; border-top: 1px dashed rgba(255, 255, 255, 0.35); }
+.next-slot-label { margin: 0 0 4px; color: var(--muted); font-size: 0.9rem; }
+.next-slot-when { margin: 0; color: #fff; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.next-slot-detail { margin: 4px 0 14px; color: var(--muted); font-size: 0.92rem; }
+
+.hero-lead {
+  grid-area: lead;
+  align-self: end;
+  max-width: 36ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+}
+
+.hero-headline { grid-area: headline; align-self: end; position: relative; z-index: 2; text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6); }
+.quick, .hero-lead { position: relative; z-index: 2; }
+.hero h1 {
+  color: #fff;
+  font-size: clamp(3rem, 1rem + 5.6vw, 5.8rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+.open-now {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 0.97rem;
+}
+.open-now::before {
+  content: "";
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #d9664f;
+  flex: none;
+}
+.open-now.is-open::before { background: #7fd09f; }
+.open-now:empty { display: none; }
+
+/* Ilustrácia v hero (náhrada za fotografiu) */
+.hero-scene {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(64%, 1000px);
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 55% at 56% 42%, rgba(242, 160, 90, 0.30), transparent 70%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 28%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 28%);
+}
+.hero-scene svg { display: block; width: 100%; height: 100%; }
+.hero-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(20, 14, 10, 0.85) 100%);
+}
+
+/* ---------- Sekcie ---------- */
+.section {
+  padding: clamp(56px, 9vw, 112px) 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.section-head { max-width: 62ch; margin-bottom: clamp(32px, 5vw, 52px); }
+.section-head p { margin: 16px 0 0; color: var(--muted); }
+.section-head-center { margin-inline: auto; text-align: center; }
+
+/* O nás */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: start;
+}
+.about-intro h2 { margin-bottom: 24px; }
+.about-intro p { max-width: 50ch; color: var(--muted); }
+.about-intro .btn { margin-top: 12px; }
+
+.features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 32px; }
+.features li { display: flex; gap: 16px; align-items: flex-start; }
+.features h3 { margin-bottom: 4px; font-size: 1.08rem; font-weight: 700; }
+.features p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* biele zaoblené dlaždice s ikonou */
+.icon-tile {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--brown-900);
+}
+.icon-tile svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Cenník */
+.services-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: start;
+}
+
+.featured {
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+  padding: 32px 28px;
+  background: var(--orange);
+  color: var(--orange-ink);
+  border-radius: 26px;
+}
+.featured-label { margin: 0 0 14px; font-weight: 700; font-size: 0.95rem; }
+.featured h3 { margin-bottom: 14px; font-size: 2.6rem; line-height: 0.95; }
+.featured p { color: rgba(42, 26, 12, 0.85); }
+.featured-price { display: flex; align-items: baseline; gap: 12px; margin: 18px 0 22px; }
+.featured-price strong { font-family: var(--font-display); font-size: 2.6rem; line-height: 1; font-weight: 700; }
+.featured-price span { font-weight: 600; }
+
+.menu { display: grid; }
+.menu-item { padding: 20px 0; border-bottom: 1px solid var(--line-strong); }
+.menu-item:first-child { padding-top: 0; }
+.menu-row { display: flex; align-items: baseline; gap: 12px; }
+.menu-name { min-width: 0; overflow-wrap: anywhere; }
+.menu-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.menu-leader { flex: 1; }
+.menu-price { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; line-height: 1; }
+.menu-desc { max-width: 52ch; margin: 6px 0 12px; color: var(--muted); font-size: 0.97rem; }
+.menu-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.menu-duration { color: var(--muted); font-size: 0.93rem; }
+
+/* Avatar: farbu pozadia určuje téma sekcie */
+.av-bg { fill: var(--avatar-bg); }
+
+/* Barberi */
+.works-grid { display: grid; grid-template-columns: minmax(240px, 340px) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+.works-intro p { margin: 18px 0 0; max-width: 34ch; color: var(--muted); }
+.works-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2vw, 20px); margin: 0; padding: 0; list-style: none; }
+.work { position: relative; aspect-ratio: 3 / 4; border-radius: 22px; overflow: hidden; background: var(--avatar-bg); }
+.work-img, .work-img svg { display: block; width: 100%; height: 100%; }
+.work-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(20, 14, 10, 0.55)); }
+.work-tag { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 1; display: grid; gap: 1px; padding: 8px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.94); color: #2a1a0c; line-height: 1.2; }
+.work-tag strong { font-size: 0.95rem; }
+.work-tag small { color: #6b5b4d; font-size: 0.8rem; }
+.barbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 3vw, 28px); }
+
+.barber {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 14px 26px;
+  background: var(--surface);
+  border-radius: 26px;
+}
+.barber-avatar {
+  position: relative;
+  aspect-ratio: 4 / 4.2;
+  margin-bottom: 22px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--avatar-bg);
+}
+.barber-avatar > svg { display: block; width: 100%; height: 100%; }
+.barber-tag {
+  position: absolute;
+  left: 12px; top: 12px;
+  padding: 7px 14px 8px;
+  background: #fff;
+  color: var(--brown-900);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+.barber-tag h3 { font-size: 1.05rem; font-weight: 800; line-height: 1.2; }
+.barber-tag p { margin: 0; color: #6b5f54; font-size: 0.8rem; line-height: 1.3; }
+
+.barber-body { display: flex; flex: 1; flex-direction: column; padding: 0 14px; }
+.barber-bio { color: var(--muted); font-size: 0.97rem; }
+.barber-label { margin: 6px 0 8px; font-size: 0.9rem; font-weight: 700; }
+.barber-services { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.barber-services li { padding: 3px 11px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--muted); font-size: 0.82rem; }
+.barber-days { margin: 0 0 22px; color: var(--muted); font-size: 0.9rem; }
+.barber .btn { margin-top: auto; align-self: flex-start; }
+
+/* ---------- Rezervácia ---------- */
+.booking-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+}
+
+.step { margin: 0 0 32px; padding: 0 0 32px; border: 0; border-bottom: 1px solid var(--line-strong); min-width: 0; }
+.step legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  float: left; /* legend sa tak správa ako bežný nadpis a nezalamuje rámček */
+  width: 100%;
+  margin: 0 0 18px;
+  padding: 0;
+  font-size: 1.2rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+.step legend + * { clear: both; }
+.step-no {
+  display: inline-grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--brown-900);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.field { margin-bottom: 18px; }
+.step > .field:last-child { margin-bottom: 0; }
+.field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+
+label { display: block; margin-bottom: 8px; font-weight: 650; font-size: 0.97rem; }
+.optional { color: var(--muted); font-weight: 400; }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+select,
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  background: var(--field-bg);
+  color: var(--text);
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 1rem; /* min. 16 px, aby iOS nepribližoval pole */
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+textarea { min-height: 96px; resize: vertical; }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.75; }
+input:hover, select:hover, textarea:hover { border-color: var(--text); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--text); box-shadow: 0 0 0 3px rgba(242, 160, 90, 0.55); }
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--error); }
+input[type="date"] { color-scheme: light; }
+.theme-dark input[type="date"], .theme-dark select { color-scheme: dark; }
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5l6 6 6-6' fill='none' stroke='%233a2f28' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+.theme-dark select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5l6 6 6-6' fill='none' stroke='%23f6efe5' stroke-width='2'/%3E%3C/svg%3E");
+}
+.theme-dark option { color: #231c17; background: #fff; }
+option:disabled { color: #8a7f73; }
+
+.field-hint { margin: 6px 0 0; color: var(--muted); font-size: 0.88rem; }
+.field-error { margin: 6px 0 0; color: var(--error); font-size: 0.92rem; font-weight: 650; }
+.field-error:empty { display: none; }
+
+.field-check { display: grid; grid-template-columns: 24px 1fr; gap: 0 12px; align-items: start; }
+.field-check input { width: 22px; height: 22px; margin: 3px 0 0; accent-color: var(--brown-900); }
+.field-check label { margin: 0; font-weight: 400; color: var(--muted); }
+.field-check .field-error { grid-column: 2; }
+
+.form-error {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-left: 4px solid #b5483a;
+  border-radius: 4px;
+  background: rgba(181, 72, 58, 0.12);
+  color: #8e3326;
+  font-weight: 650;
+}
+.form-error:empty { display: none; }
+
+/* Výber barbera */
+.barber-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.barber-choice { position: relative; margin: 0; cursor: pointer; font-weight: 400; }
+.barber-choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.barber-choice-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius-sm);
+  background: var(--field-bg);
+  transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+.barber-choice:hover .barber-choice-body { border-color: var(--text); }
+.barber-choice input:focus-visible + .barber-choice-body { outline: 3px solid var(--focus); outline-offset: 2px; }
+.barber-choice input:checked + .barber-choice-body { border-color: var(--brown-900); background: #fff3e4; box-shadow: inset 0 0 0 1.5px var(--brown-900); }
+.barber-choice input:disabled + .barber-choice-body { opacity: 0.5; cursor: not-allowed; }
+.barber-choice-avatar { width: 44px; height: 44px; flex: none; border-radius: 50%; overflow: hidden; }
+.barber-choice-avatar svg { display: block; width: 100%; height: 100%; }
+.barber-choice-name { display: block; font-weight: 700; line-height: 1.2; }
+.barber-choice-note { display: block; color: var(--muted); font-size: 0.82rem; line-height: 1.3; }
+
+/* Rýchly výber dátumu */
+.date-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.date-chips:empty { display: none; }
+.chip {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--field-border);
+  border-radius: 999px;
+  background: var(--field-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+.chip:hover { border-color: var(--text); }
+.chip[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); color: var(--orange-ink); }
+
+/* Časové sloty */
+.slots-message { margin: 0 0 14px; color: var(--muted); }
+.slots-message:empty { display: none; }
+.slots-message.is-warning { color: var(--error); font-weight: 650; }
+
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 8px; }
+.slots:empty { display: none; }
+
+.slot { position: relative; margin: 0; font-weight: 400; }
+.slot input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.slot-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 8px;
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius-sm);
+  background: var(--field-bg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+.slot:hover .slot-body { border-color: var(--text); background: #fff3e4; }
+.slot input:focus-visible + .slot-body { outline: 3px solid var(--focus); outline-offset: 2px; }
+.slot input:checked + .slot-body { background: var(--orange); border-color: var(--orange-600); color: var(--orange-ink); font-weight: 850; }
+
+/* Obsadené: šrafovanie ako na barber póle, nie len farba */
+.slot.is-booked .slot-body {
+  border-color: rgba(181, 72, 58, 0.6);
+  background: repeating-linear-gradient(135deg, rgba(181, 72, 58, 0.26) 0 6px, rgba(181, 72, 58, 0.06) 6px 12px);
+  color: var(--muted);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+.slot.is-booked:hover .slot-body { border-color: rgba(181, 72, 58, 0.6); background: repeating-linear-gradient(135deg, rgba(181, 72, 58, 0.26) 0 6px, rgba(181, 72, 58, 0.06) 6px 12px); }
+
+/* Nedostupné: minulosť alebo mimo otváracích hodín */
+.slot.is-off .slot-body {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  background: transparent;
+  color: var(--muted);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.slot.is-off:hover .slot-body { background: transparent; border-color: var(--line-strong); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; color: var(--muted); font-size: 0.88rem; }
+.legend li { display: flex; align-items: center; gap: 8px; }
+.swatch { display: inline-block; width: 22px; height: 16px; border-radius: 4px; border: 1px solid var(--field-border); background: var(--field-bg); }
+.swatch-booked { border-color: rgba(181, 72, 58, 0.6); background: repeating-linear-gradient(135deg, rgba(181, 72, 58, 0.45) 0 4px, rgba(181, 72, 58, 0.1) 4px 8px); }
+.swatch-off { border: 1px dashed var(--line-strong); background: transparent; }
+
+/* Zhrnutie rezervácie */
+.slip {
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+  padding: 28px 26px 24px;
+  background: #fff;
+  border-radius: 22px;
+  border-top: 6px solid var(--orange);
+}
+.slip h3 { margin-bottom: 16px; font-size: 2rem; line-height: 1; }
+.slip-list { margin: 0; }
+.slip-list > div { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.slip-list dt { color: var(--muted); font-size: 0.85rem; }
+.slip-list dd { margin: 2px 0 0; font-weight: 700; }
+.slip-list dd.is-empty { color: var(--muted); font-weight: 400; }
+.slip-total { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 18px 0 0; padding-top: 18px; border-top: 2px dashed var(--line-strong); }
+.slip-total span { color: var(--muted); }
+.slip-total strong { font-family: var(--font-display); font-size: 2.4rem; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Potvrdenie */
+.confirmation {
+  margin-top: clamp(28px, 5vw, 48px);
+  padding: clamp(24px, 4vw, 40px);
+  background: #fff;
+  border-radius: 26px;
+  border-left: 8px solid var(--orange);
+}
+.confirmation:focus { outline: none; }
+.confirmation:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.confirmation h3 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); line-height: 0.98; }
+.confirmation-lead { margin: 12px 0 24px; color: var(--muted); }
+.confirmation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0 32px; margin: 0 0 28px; }
+.confirmation-grid > div { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.confirmation-grid dt { color: var(--muted); font-size: 0.85rem; }
+.confirmation-grid dd { margin: 2px 0 0; font-weight: 700; overflow-wrap: anywhere; }
+.confirmation-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ---------- Moje rezervácie ---------- */
+.lookup { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; max-width: 720px; margin-bottom: 36px; }
+.lookup .field { flex: 1 1 320px; margin: 0; }
+.lookup > .btn { margin-top: 31px; }
+
+.results { max-width: 940px; }
+.results-group-title { margin: 32px 0 12px; color: var(--muted); font-size: 1rem; font-weight: 700; }
+.results-group-title:first-child { margin-top: 0; }
+.results-empty { margin: 0; padding: 20px; border: 1px dashed var(--line-strong); border-radius: var(--radius); color: var(--muted); }
+.results-empty a { color: var(--text); font-weight: 650; }
+
+.booking-list { display: grid; gap: 12px; }
+
+.booking-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 150px;
+  gap: 8px 24px;
+  align-items: center;
+  padding: 20px 24px;
+  background: var(--surface);
+  border-radius: 20px;
+}
+.booking-card:focus { outline: none; }
+.booking-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.booking-main h4 { margin: 0 0 2px; font-size: 1.12rem; font-weight: 750; }
+.booking-sub { margin: 0; color: var(--muted); font-size: 0.93rem; }
+.booking-when { margin: 0; font-weight: 700; }
+.booking-price { margin: 0; font-weight: 800; font-variant-numeric: tabular-nums; }
+.booking-side { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 12px 3px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #2f8f5b; }
+.status-cancelled { border-color: rgba(181, 72, 58, 0.6); color: #9b3a2d; }
+.status-cancelled::before { border-radius: 1px; background: #b5483a; transform: rotate(45deg); }
+.status-completed { color: var(--muted); }
+.status-completed::before { background: transparent; border: 2px solid currentColor; }
+
+.booking-card.is-cancelled .booking-main h4,
+.booking-card.is-cancelled .booking-when { text-decoration: line-through; text-decoration-color: rgba(181, 72, 58, 0.7); }
+.booking-card.is-cancelled, .booking-card.is-completed { opacity: 0.85; }
+
+.booking-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-top: 12px; border-top: 1px dashed var(--line-strong); }
+.booking-actions:empty { display: none; }
+.cancel-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.cancel-confirm p { margin: 0; font-weight: 650; }
+
+/* ---------- Kontakt ---------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 0.8fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: stretch;
+}
+.contact-main h2 { margin-bottom: 18px; }
+.contact-lead { max-width: 34ch; margin-bottom: 26px; color: var(--muted); }
+
+.hours { width: 100%; border-collapse: collapse; }
+.hours th, .hours td { padding: 10px 0; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; font-size: 0.97rem; }
+.hours td { text-align: right; font-variant-numeric: tabular-nums; }
+.hours tr.is-today th, .hours tr.is-today td { color: var(--orange); font-weight: 750; }
+.hours tr.is-today th::after { content: " (dnes)"; font-weight: 400; color: var(--muted); }
+
+.map-wrap {
+  position: relative;
+  display: block;
+  min-height: 380px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #5b4f47;
+  border: 1px solid var(--line);
+  text-decoration: none;
+}
+.map-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-label {
+  position: absolute;
+  left: 16px; bottom: 16px;
+  padding: 9px 18px;
+  background: #fff;
+  color: var(--brown-900);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+.map-wrap:hover .map-label { background: var(--orange); color: var(--orange-ink); }
+
+.contact-tiles { display: flex; flex-direction: column; justify-content: center; gap: 28px; font-style: normal; }
+.contact-tile { display: flex; gap: 16px; align-items: flex-start; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.contact-tile:last-child { padding-bottom: 0; border-bottom: 0; }
+.contact-key { margin: 0 0 2px; color: var(--muted); font-size: 0.88rem; }
+.contact-value { margin: 0; font-size: 1.12rem; font-weight: 650; overflow-wrap: anywhere; }
+.contact-tile > div { min-width: 0; }
+.contact-value a { text-decoration: none; }
+.contact-value a:hover { text-decoration: underline; }
+.contact-link { display: inline-block; margin-top: 8px; color: var(--orange); font-weight: 650; font-size: 0.92rem; }
+
+/* ---------- Pätička ---------- */
+.site-footer { padding: clamp(40px, 6vw, 64px) 0 40px; background: #fff; color: #231c17; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 32px clamp(24px, 5vw, 72px); }
+.footer-name { margin: 0 0 8px; font-family: var(--font-display); font-size: 2rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; line-height: 1; }
+.footer-copy, .footer-demo { margin: 0 0 6px; color: #65594e; font-size: 0.92rem; }
+.footer-title { margin: 0 0 12px; font-weight: 750; }
+.footer-links a { display: inline-block; padding: 5px 0; color: #4a3f38; text-decoration: none; }
+.footer-links a:hover { color: #231c17; text-decoration: underline; }
+.footer-hours p { color: #4a3f38; font-size: 0.97rem; }
+.site-footer :focus-visible { outline-color: #1d1612; }
+
+/* ---------- Oznámenie ---------- */
+.toast {
+  position: fixed;
+  left: 50%; bottom: 24px;
+  z-index: 80;
+  max-width: min(480px, calc(100% - 32px));
+  padding: 14px 22px;
+  background: var(--brown-950);
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 650;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.toast:empty { display: none; }
+
+/* ---------- Menšie desktopy ---------- */
+@media (max-width: 1200px) {
+  .site-nav li a { padding: 8px 12px; }
+  .hero-grid { grid-template-columns: minmax(280px, 340px) minmax(0, 1fr) minmax(0, 520px); }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  .nav-toggle { display: inline-flex; }
+  .site-nav {
+    position: absolute;
+    top: var(--header-h); left: 0; right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px var(--gutter) 24px;
+    background: rgba(29, 22, 18, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    max-height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+  }
+  .site-nav.is-open { display: flex; }
+  .site-nav ul { flex-direction: column; gap: 0; padding: 0; background: none; border-radius: 0; }
+  .site-nav li a { padding: 14px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-radius: 0; color: #f6efe5; font-size: 1.05rem; }
+  .site-nav li a:hover { background: none; color: var(--orange); }
+  .site-nav li a.is-active { background: none; color: var(--orange); }
+  .nav-cta { margin-top: 20px; min-height: 52px; }
+  .site-header { background: rgba(29, 22, 18, 0.94); }
+
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "headline" "lead" "quick";
+    gap: 28px;
+  }
+  .hero { flex-direction: column; }
+  .hero-scene {
+    position: relative;
+    inset: auto;
+    width: min(1180px, 100% - 2 * var(--gutter));
+    height: 300px;
+    margin: 0 auto 28px;
+    border-radius: 22px;
+    overflow: hidden;
+    -webkit-mask-image: none;
+    mask-image: none;
+    background: radial-gradient(ellipse at 50% 40%, rgba(242, 160, 90, 0.18), transparent 70%), rgba(255, 255, 255, 0.03);
+  }
+  .hero-headline { align-self: start; }
+  .hero-lead { max-width: 52ch; align-self: start; }
+  .quick { max-width: 440px; }
+
+
+  .about-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: minmax(0, 1fr); }
+  .featured { position: static; }
+  .barbers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .works-grid { grid-template-columns: minmax(0, 1fr); }
+  .booking-layout { grid-template-columns: minmax(0, 1fr); }
+  .slip { position: static; }
+  .contact-grid { grid-template-columns: minmax(0, 1fr); }
+  .map-wrap { min-height: 300px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: 1 / -1; }
+
+  .booking-card { grid-template-columns: minmax(0, 1fr) auto; }
+  .booking-side { grid-column: 2; grid-row: 1 / span 2; }
+}
+
+/* ---------- Mobil ---------- */
+@media (max-width: 640px) {
+  body { font-size: 1rem; }
+  .features { grid-template-columns: 1fr; }
+  .field-row { grid-template-columns: 1fr; }
+  .lookup > .btn { width: 100%; margin-top: 0; }
+  .barbers { grid-template-columns: 1fr; }
+  .slots { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
+  .confirmation-actions .btn { flex: 1 1 100%; }
+  .booking-card { grid-template-columns: 1fr; padding: 18px; }
+  .booking-side { grid-column: 1; grid-row: auto; flex-direction: row; align-items: center; justify-content: space-between; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .menu-name { font-size: 1.5rem; }
+}
+
+/* ---------- Obmedzený pohyb ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+
+/* Potvrdenie obnovenia demo dát (bez okna confirm) */
+.reset-confirm { display: inline; margin-left: 4px; font-weight: 650; color: #231c17; }
+.reset-confirm .link-button { margin-left: 6px; }
+
+@media (max-width: 640px) {
+  .works-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+</style>
 </head>
 <body id="top">
-  <a class="skip-link" href="#hlavny-obsah">Preskočiť na obsah</a>
+<a class="skip-link" href="#hlavny-obsah">Preskočiť na obsah</a>
 
   <header class="site-header" id="site-header">
     <div class="container header-inner">
@@ -56,6 +1090,54 @@
     <!-- HERO -->
     <section class="hero theme-dark" aria-labelledby="hero-title">
       <div class="hero-lights" aria-hidden="true"></div>
+    <div class="hero-scene" aria-hidden="true">
+    <svg viewBox="0 0 700 600" preserveAspectRatio="xMaxYMax meet" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sc-leather" x1="0" x2="1"><stop offset="0" stop-color="#1a110d"/><stop offset=".5" stop-color="#3a2a21"/><stop offset="1" stop-color="#150d0a"/></linearGradient>
+        <linearGradient id="sc-cape" x1="0" x2="1"><stop offset="0" stop-color="#121116"/><stop offset=".45" stop-color="#2b2a33"/><stop offset="1" stop-color="#0f0e13"/></linearGradient>
+        <linearGradient id="sc-shirt" x1="0" x2="1"><stop offset="0" stop-color="#3a342f"/><stop offset=".5" stop-color="#5a524a"/><stop offset="1" stop-color="#2c2723"/></linearGradient>
+        <radialGradient id="sc-glow" cx=".5" cy=".4" r=".6"><stop offset="0" stop-color="#f2a05a" stop-opacity=".35"/><stop offset="1" stop-color="#f2a05a" stop-opacity="0"/></radialGradient>
+      </defs>
+      <!-- kreslo -->
+      <rect x="205" y="60" width="270" height="560" rx="70" fill="url(#sc-leather)"/>
+      <rect x="205" y="60" width="270" height="560" rx="70" fill="none" stroke="#f2a05a" stroke-opacity=".25" stroke-width="3"/>
+      <!-- barber: telo a hlava -->
+      <path d="M392 600C396 440 450 345 525 340c78 5 132 100 140 260z" fill="url(#sc-shirt)"/>
+      <path d="M492 342L476 600M572 342L592 600" stroke="#1d1612" stroke-width="18" fill="none"/>
+      <path d="M500 345l25 38 25-38" fill="none" stroke="#8a7e72" stroke-width="5"/>
+      <rect x="500" y="262" width="46" height="62" rx="20" fill="#a97755"/>
+      <ellipse cx="523" cy="205" rx="47" ry="58" fill="#c08a64"/>
+      <path d="M476 215c-4 46 14 70 47 70s51-24 47-70c-4 22-16 32-47 32s-43-10-47-32z" fill="#4a4540"/>
+      <path d="M478 196c-8-52 22-72 47-72s58 18 46 72c-6-18-18-30-46-30s-40 12-47 30z" fill="#17110d"/>
+      <circle cx="507" cy="205" r="2.4" fill="#1a1410"/><circle cx="541" cy="205" r="2.4" fill="#1a1410"/>
+      <path d="M510 242q14 7 28 0" stroke="#2a1a10" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- klient: plášť -->
+      <path d="M120 600C120 470 205 372 340 362c135 10 220 108 220 238z" fill="url(#sc-cape)"/>
+      <path d="M120 600C120 470 205 372 340 362" fill="none" stroke="#f2a05a" stroke-opacity=".35" stroke-width="3"/>
+      <rect x="311" y="296" width="58" height="76" rx="22" fill="#c99a76"/>
+      <path d="M296 366q44 30 88 0" stroke="#3b3a46" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <!-- klient: hlava -->
+      <ellipse cx="282" cy="262" rx="9" ry="16" fill="#d4a47f"/><ellipse cx="398" cy="262" rx="9" ry="16" fill="#d4a47f"/>
+      <ellipse cx="340" cy="252" rx="58" ry="70" fill="#e2b48f"/>
+      <path d="M283 262c2 62 26 82 57 82s55-20 57-82c-7 28-24 38-57 38s-50-10-57-38z" fill="#2b1f17"/>
+      <path d="M312 297q28 12 56 0" stroke="#2b1f17" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M327 316q13 6 26 0" stroke="#7a4a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M284 238C268 172 320 140 372 150c36 8 44 52 26 90-8-34-26-52-58-52-32 0-50 18-56 50z" fill="#2a1a12"/>
+      <path d="M300 175c20-22 60-24 84 0" stroke="#5a3a28" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+      <g fill="rgba(255,255,255,.07)" stroke="#120d0a" stroke-width="3.5"><circle cx="318" cy="254" r="19"/><circle cx="364" cy="254" r="19"/></g>
+      <path d="M337 252h6" stroke="#120d0a" stroke-width="3.5"/>
+      <circle cx="318" cy="255" r="2.6" fill="#1a1410"/><circle cx="364" cy="255" r="2.6" fill="#1a1410"/>
+      <path d="M298 236q20-10 40 0M346 236q20-10 40 0" stroke="#2a1a12" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- ruka barbera so strojčekom -->
+      <path d="M520 378Q482 380 456 392" stroke="#4a433d" stroke-width="48" fill="none" stroke-linecap="round"/>
+      <path d="M456 392Q438 320 428 232" stroke="#c08a64" stroke-width="34" fill="none" stroke-linecap="round"/>
+      <path d="M458 380l-8-34" stroke="#5a524a" stroke-width="44" fill="none" stroke-linecap="butt"/>
+      <circle cx="426" cy="226" r="22" fill="#c08a64"/>
+      <rect x="378" y="190" width="66" height="26" rx="10" transform="rotate(-14 411 203)" fill="#26211d"/>
+      <rect x="374" y="186" width="32" height="10" rx="4" transform="rotate(-14 390 191)" fill="#f2a05a"/>
+    </svg>
+  </div>
+
 
       <div class="container hero-grid">
         <div class="quick" role="group" aria-labelledby="quick-title">
@@ -82,12 +1164,6 @@
             <p class="next-slot-detail" id="next-slot-detail"></p>
             <button class="btn btn-outline-light btn-small" type="button" id="next-slot-book">Rezervovať tento termín</button>
           </aside>
-        </div>
-
-        <div class="pole" aria-hidden="true">
-          <span class="pole-cap pole-cap-top"></span>
-          <span class="pole-glass"><span class="pole-stripes"></span></span>
-          <span class="pole-cap pole-cap-bottom"></span>
         </div>
 
         <p class="hero-lead">Klasické remeslo, presný strih a termín, ktorý máte istý. Vyberte si službu, barbera a čas, rezervácia zaberie menej ako minútu.</p>
@@ -150,6 +1226,17 @@
           </div>
           <ul class="menu" id="services-list"></ul>
         </div>
+      </div>
+    </section>
+
+    <!-- NAŠE PRÁCE -->
+    <section class="section theme-dark works" aria-labelledby="works-title">
+      <div class="container works-grid">
+        <div class="works-intro">
+          <h2 id="works-title">Naše práce</h2>
+          <p>Každý strih robíme na mieru: podľa tvaru tváre, vlasov a toho, ako sa o ne staráte. Pozrite si, čo máme v ponuke najčastejšie.</p>
+        </div>
+        <ul class="works-list" id="works-list"></ul>
       </div>
     </section>
 
@@ -400,10 +1487,2011 @@
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+/**
+ * data.js – statické dáta barber shopu (služby, barberi, otváracie hodiny, pravidlá).
+ *
+ * Súbor funguje v prehliadači (globálna premenná BarberData) aj v Node.js (require),
+ * aby sa dali rovnaké dáta použiť aj v automatických testoch.
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory();
+  } else {
+    root.BarberData = factory();
+  }
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
 
-  <script src="js/data.js"></script>
-  <script src="js/booking-logic.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
+  /** Základné informácie o prevádzke (demo údaje, adresa je fiktívna). */
+  const SHOP = {
+    name: 'Barber Studio',
+    slogan: 'Klasické remeslo, presný strih.',
+    address: 'Obchodná 12, 811 06 Bratislava',
+    phone: '+421 900 123 456',
+    phoneHref: '+421900123456',
+    email: 'barbershopmn17@gmail.com',
+    // Voliteľné: adresa formulára (napr. https://formspree.io/f/xxxx), ktorá po každej rezervácii
+    // pošle e-mail na adresu salónu. Funguje na vlastnom hostingu, nie priamo v aplikácii Claude.
+    notifyUrl: '',
+    mapLink: 'https://www.openstreetmap.org/?mlat=48.1486&mlon=17.1077#map=17/48.1486/17.1077',
+    mapEmbed:
+      'https://www.openstreetmap.org/export/embed.html?bbox=17.1030%2C48.1458%2C17.1124%2C48.1514&layer=mapnik&marker=48.1486%2C17.1077',
+  };
+
+  /** Pravidlá rezervácií. */
+  const RULES = {
+    slotStep: 30, // krok mriežky začiatkov termínov v minútach
+    maxDaysAhead: 60, // koľko dní dopredu je možné rezervovať
+    maxNoteLength: 300, // maximálna dĺžka poznámky
+  };
+
+  /** Názvy dní podľa Date.getDay() (0 = nedeľa). */
+  const DAY_NAMES = ['Nedeľa', 'Pondelok', 'Utorok', 'Streda', 'Štvrtok', 'Piatok', 'Sobota'];
+
+  /**
+   * Otváracie hodiny podľa Date.getDay(). null = zatvorené.
+   * Po–Pi 9:00–19:00, So 9:00–14:00, Ne zatvorené.
+   */
+  const OPENING_HOURS = {
+    0: null,
+    1: { open: '09:00', close: '19:00' },
+    2: { open: '09:00', close: '19:00' },
+    3: { open: '09:00', close: '19:00' },
+    4: { open: '09:00', close: '19:00' },
+    5: { open: '09:00', close: '19:00' },
+    6: { open: '09:00', close: '14:00' },
+  };
+
+  /** Cenník. duration = minúty, price = EUR. */
+  const SERVICES = [
+    {
+      id: 'panski-strih',
+      name: 'Pánsky strih',
+      description: 'Konzultácia, strih nožnicami a strojčekom, úprava kontúr a styling.',
+      duration: 30,
+      price: 18,
+    },
+    {
+      id: 'strih-styling',
+      name: 'Strih, umytie a styling',
+      description: 'Strih s umytím vlasov, masážou pokožky hlavy a stylingom produktmi.',
+      duration: 45,
+      price: 25,
+    },
+    {
+      id: 'skin-fade',
+      name: 'Skin fade',
+      description: 'Plynulý prechod až na kožu, presné línie a dôkladné dokončenie britvou.',
+      duration: 45,
+      price: 22,
+    },
+    {
+      id: 'strojcek',
+      name: 'Strojčekový strih',
+      description: 'Rýchly strih na jednu dĺžku alebo jednoduchý prechod.',
+      duration: 30,
+      price: 12,
+    },
+    {
+      id: 'uprava-brady',
+      name: 'Úprava brady',
+      description: 'Tvarovanie, skrátenie a vyčistenie kontúr brady a fúzov.',
+      duration: 30,
+      price: 14,
+    },
+    {
+      id: 'holenie-britvou',
+      name: 'Klasické holenie britvou',
+      description: 'Horúci uterák, holiaca pena a holenie britvou, nakoniec upokojujúci balzam.',
+      duration: 30,
+      price: 20,
+    },
+    {
+      id: 'strih-brada',
+      name: 'Strih a brada',
+      description: 'Pánsky strih spolu s úpravou brady. Najobľúbenejšia kombinácia.',
+      duration: 60,
+      price: 32,
+    },
+    {
+      id: 'detsky-strih',
+      name: 'Detský strih',
+      description: 'Trpezlivý strih pre chlapcov do 12 rokov.',
+      duration: 30,
+      price: 14,
+    },
+    {
+      id: 'farbenie',
+      name: 'Kamufláž sivín',
+      description: 'Jemné prefarbenie vlasov alebo brady, ktoré pôsobí prirodzene.',
+      duration: 45,
+      price: 25,
+    },
+    {
+      id: 'kralovsky',
+      name: 'Kráľovský balíček',
+      description: 'Strih, úprava brady, holenie britvou, maska na tvár a masáž šije.',
+      duration: 90,
+      price: 55,
+    },
+  ];
+
+  /**
+   * Barberi. workDays podľa Date.getDay() (v kombinácii s otváracími hodinami),
+   * services = id služieb, ktoré barber ponúka, look = vzhľad avatara.
+   */
+  const BARBERS = [
+    {
+      id: 'marek',
+      name: 'Michael Nguyen',
+      role: 'Majster barber a zakladateľ',
+      bio: 'Strihá viac ako dvanásť rokov. Pozná klasiku aj aktuálne trendy a poradí, čo vám pristane k tvaru tváre.',
+      workDays: [1, 2, 3, 4, 5, 6],
+      services: [
+        'panski-strih',
+        'strih-styling',
+        'skin-fade',
+        'strojcek',
+        'uprava-brady',
+        'holenie-britvou',
+        'strih-brada',
+        'detsky-strih',
+        'farbenie',
+        'kralovsky',
+      ],
+      look: { skin: '#e0b088', hair: '#1c1612', beard: '#2a1e15', hasBeard: true, style: 'slick' },
+    },
+    {
+      id: 'tomas',
+      name: 'Tomáš Kováč',
+      role: 'Špecialista na fade',
+      bio: 'Presné prechody, ostré línie a čistý výsledok. Tomáš je jednotka pre skin fade a moderné krátke strihy.',
+      workDays: [1, 2, 3, 4, 5],
+      services: ['panski-strih', 'strih-styling', 'skin-fade', 'strojcek', 'strih-brada', 'detsky-strih'],
+      look: { skin: '#c98f67', hair: '#120f0c', beard: '#120f0c', hasBeard: false, style: 'fade' },
+    },
+    {
+      id: 'lukas',
+      name: 'Lukáš Novák',
+      role: 'Majster brady a holenia',
+      bio: 'Horúci uterák, britva a pokoj. Lukáš sa venuje úprave brady a holeniu v tradičnom štýle.',
+      workDays: [2, 3, 4, 5, 6],
+      services: ['panski-strih', 'uprava-brady', 'holenie-britvou', 'strih-brada', 'farbenie', 'kralovsky'],
+      look: { skin: '#e8bf9a', hair: '#4a4038', beard: '#6b5f55', hasBeard: true, style: 'curly' },
+    },
+  ];
+
+  /** Demo zákazník, s ktorým sú predvyplnené ukážkové rezervácie. */
+  const DEMO_CUSTOMER = {
+    name: 'Demo Zákazník',
+    email: 'demo@example.com',
+    phone: '+421900123456',
+  };
+
+  return Object.freeze({ SHOP, RULES, DAY_NAMES, OPENING_HOURS, SERVICES, BARBERS, DEMO_CUSTOMER });
+});
+
+/**
+ * booking-logic.js – čistá (bez DOM a bez úložiska) logika rezervácií.
+ *
+ * Všetky funkcie dostávajú aktuálny čas (`now`) a zoznam rezervácií ako parameter,
+ * vďaka čomu sa dajú ľahko testovať. Dátumy sa ukladajú ako lokálne reťazce
+ * "RRRR-MM-DD" a časy ako "HH:MM" (čas prevádzky je lokálny čas barber shopu).
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('./data.js'));
+  } else {
+    root.BookingLogic = factory(root.BarberData);
+  }
+})(typeof self !== 'undefined' ? self : this, function (Data) {
+  'use strict';
+
+  const { SERVICES, BARBERS, OPENING_HOURS, RULES } = Data;
+
+  const STATUS = Object.freeze({ CONFIRMED: 'confirmed', CANCELLED: 'cancelled', COMPLETED: 'completed' });
+
+  /* ------------------------------------------------------------------ */
+  /* Dátum a čas                                                         */
+  /* ------------------------------------------------------------------ */
+
+  const pad = (n) => String(n).padStart(2, '0');
+
+  /** Date -> "RRRR-MM-DD" v lokálnom čase. */
+  function toISODate(date) {
+    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+  }
+
+  /** "RRRR-MM-DD" -> Date (polnoc lokálneho času) alebo null, ak je dátum neplatný. */
+  function parseISODate(str) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(str || ''));
+    if (!m) return null;
+    const y = Number(m[1]);
+    const mo = Number(m[2]);
+    const d = Number(m[3]);
+    const date = new Date(y, mo - 1, d);
+    // odfiltruje napr. 2026-02-31
+    if (date.getFullYear() !== y || date.getMonth() !== mo - 1 || date.getDate() !== d) return null;
+    return date;
+  }
+
+  /** "HH:MM" -> minúty od polnoci alebo null. */
+  function timeToMinutes(time) {
+    const m = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(String(time || ''));
+    return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+  }
+
+  /** minúty od polnoci -> "HH:MM". */
+  function minutesToTime(min) {
+    return pad(Math.floor(min / 60)) + ':' + pad(min % 60);
+  }
+
+  /** Pripočíta n dní k ISO dátumu. */
+  function addDays(iso, n) {
+    const d = parseISODate(iso);
+    d.setDate(d.getDate() + n);
+    return toISODate(d);
+  }
+
+  /** Dátum a čas začiatku termínu ako Date. */
+  function startDateTime(iso, time) {
+    const d = parseISODate(iso);
+    const min = timeToMinutes(time);
+    d.setHours(Math.floor(min / 60), min % 60, 0, 0);
+    return d;
+  }
+
+  /** Dátum a čas konca termínu ako Date. */
+  function endDateTime(iso, time, duration) {
+    return new Date(startDateTime(iso, time).getTime() + duration * 60000);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Vyhľadanie dát                                                      */
+  /* ------------------------------------------------------------------ */
+
+  const getService = (id) => SERVICES.find((s) => s.id === id) || null;
+  const getBarber = (id) => BARBERS.find((b) => b.id === id) || null;
+
+  /** Otváracie hodiny pre daný ISO dátum, alebo null, keď je zatvorené / dátum je neplatný. */
+  function getOpeningHours(iso) {
+    const d = parseISODate(iso);
+    if (!d) return null;
+    return OPENING_HOURS[d.getDay()] || null;
+  }
+
+  const barberOffers = (barber, serviceId) => barber.services.includes(serviceId);
+
+  function barberWorksOn(barber, iso) {
+    const d = parseISODate(iso);
+    return !!d && barber.workDays.includes(d.getDay());
+  }
+
+  /**
+   * Stav dátumu pre rezerváciu:
+   * 'invalid' | 'past' | 'too-far' | 'closed' | 'barber-off' | 'ok'
+   */
+  function getDateStatus(iso, now, barber) {
+    const d = parseISODate(iso);
+    if (!d) return 'invalid';
+    const today = toISODate(now);
+    if (iso < today) return 'past';
+    if (iso > addDays(today, RULES.maxDaysAhead)) return 'too-far';
+    if (!getOpeningHours(iso)) return 'closed';
+    if (barber && !barberWorksOn(barber, iso)) return 'barber-off';
+    return 'ok';
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Dostupnosť termínov                                                 */
+  /* ------------------------------------------------------------------ */
+
+  /** Prekrývajú sa intervaly [aStart, aEnd) a [bStart, bEnd)? */
+  const overlaps = (aStart, aEnd, bStart, bEnd) => aStart < bEnd && aEnd > bStart;
+
+  /** Aktívne (nezrušené) rezervácie barbera v daný deň. */
+  function activeBookingsFor(bookings, barberId, iso) {
+    return bookings.filter((b) => b.status === STATUS.CONFIRMED && b.barberId === barberId && b.date === iso);
+  }
+
+  /**
+   * Vráti mriežku termínov pre daný deň, službu a barbera.
+   *
+   * Výsledok: { status, slots } kde slots = [{ time, end, state, reason }]
+   *  - state 'available'   – termín je voľný,
+   *  - state 'booked'      – termín je obsadený (iná rezervácia sa prekrýva s trvaním služby),
+   *  - state 'unavailable' – nedá sa vybrať (reason: 'past' | 'after-closing').
+   */
+  function getDaySlots({ date, service, barber, bookings, now }) {
+    const status = getDateStatus(date, now, barber);
+    if (status !== 'ok') return { status, slots: [] };
+
+    const hours = getOpeningHours(date);
+    const open = timeToMinutes(hours.open);
+    const close = timeToMinutes(hours.close);
+    const busy = activeBookingsFor(bookings, barber.id, date).map((b) => {
+      const s = timeToMinutes(b.time);
+      return [s, s + b.duration];
+    });
+
+    const slots = [];
+    for (let start = open; start < close; start += RULES.slotStep) {
+      const end = start + service.duration;
+      const time = minutesToTime(start);
+      let state = 'available';
+      let reason = null;
+
+      if (startDateTime(date, time).getTime() <= now.getTime()) {
+        state = 'unavailable';
+        reason = 'past';
+      } else if (busy.some(([bs, be]) => overlaps(start, end, bs, be))) {
+        state = 'booked';
+        reason = 'booked';
+      } else if (end > close) {
+        state = 'unavailable';
+        reason = 'after-closing';
+      }
+      slots.push({ time, end: minutesToTime(end), state, reason });
+    }
+    return { status, slots };
+  }
+
+  /** Zoznam najbližších otvorených dní (dnes len ak ešte zostáva voľný čas). */
+  function listOpenDates(now, count, barber) {
+    const result = [];
+    let iso = toISODate(now);
+    for (let i = 0; i <= RULES.maxDaysAhead && result.length < count; i++, iso = addDays(iso, 1)) {
+      const status = getDateStatus(iso, now, barber);
+      if (status !== 'ok') continue;
+      if (i === 0) {
+        const hours = getOpeningHours(iso);
+        const closeAt = startDateTime(iso, hours.close).getTime() - RULES.slotStep * 60000;
+        if (now.getTime() >= closeAt) continue;
+      }
+      result.push(iso);
+    }
+    return result;
+  }
+
+  /**
+   * Najbližší voľný termín pre danú službu (u ktoréhokoľvek barbera, ktorý ju ponúka).
+   * Vráti { date, time, barber } alebo null.
+   */
+  function findNextAvailable({ service, bookings, now, barbers = BARBERS, daysAhead = 21 }) {
+    let best = null;
+    let iso = toISODate(now);
+    for (let i = 0; i <= daysAhead; i++, iso = addDays(iso, 1)) {
+      for (const barber of barbers) {
+        if (!barberOffers(barber, service.id)) continue;
+        const { slots } = getDaySlots({ date: iso, service, barber, bookings, now });
+        const free = slots.find((s) => s.state === 'available');
+        if (free && (!best || free.time < best.time)) best = { date: iso, time: free.time, barber };
+      }
+      if (best) return best; // prvý deň, v ktorom je niečo voľné, obsahuje najskorší termín
+    }
+    return null;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Normalizácia a validácia vstupov                                    */
+  /* ------------------------------------------------------------------ */
+
+  const normalizeEmail = (value) => String(value || '').trim().toLowerCase();
+
+  /**
+   * Zjednotí zápis telefónneho čísla: "0900 123 456", "+421 900 123 456",
+   * "00421900123456" aj "900123456" -> "+421900123456".
+   */
+  function normalizePhone(value) {
+    let s = String(value || '').trim().replace(/[\s\-().\/]/g, '');
+    if (s.startsWith('00')) s = '+' + s.slice(2);
+    else if (s.startsWith('0')) s = '+421' + s.slice(1);
+    else if (/^[1-9]\d{8}$/.test(s)) s = '+421' + s;
+    else if (/^[1-9]\d{10,14}$/.test(s)) s = '+' + s;
+    return s;
+  }
+
+  const isValidEmail = (email) => email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  // Slovenské číslo (+421) má presne 9 číslic za predvoľbou, ostatné medzinárodné čísla 10 až 15 číslic (E.164).
+  const isValidPhone = (phone) => (phone.startsWith('+421') ? /^\+421[1-9]\d{8}$/ : /^\+[1-9]\d{9,14}$/).test(phone);
+  const isValidName = (name) => /^\p{L}[\p{L}\p{M}\s.'’-]*$/u.test(name);
+
+  /**
+   * Overí vstup rezervačného formulára.
+   * Vráti { valid, errors, values }, kde values sú upravené (trim, normalizované) hodnoty.
+   */
+  function validateBookingInput(input, now) {
+    const errors = {};
+    const src = input || {};
+
+    const service = getService(src.serviceId);
+    const barber = getBarber(src.barberId);
+    const date = String(src.date || '').trim();
+    const time = String(src.time || '').trim();
+    const name = String(src.name || '').trim().replace(/\s+/g, ' ');
+    const email = normalizeEmail(src.email);
+    const phoneRaw = String(src.phone || '').trim();
+    const phone = normalizePhone(phoneRaw);
+    const note = String(src.note || '').trim();
+
+    if (!src.serviceId) errors.service = 'Vyberte službu.';
+    else if (!service) errors.service = 'Vybraná služba neexistuje.';
+
+    if (!src.barberId) errors.barber = 'Vyberte barbera.';
+    else if (!barber) errors.barber = 'Vybraný barber neexistuje.';
+    else if (service && !barberOffers(barber, service.id)) errors.barber = 'Tento barber vybranú službu neponúka.';
+
+    if (!date) errors.date = 'Vyberte dátum.';
+    else {
+      const status = getDateStatus(date, now, barber && !errors.barber ? barber : null);
+      if (status === 'invalid') errors.date = 'Zadajte platný dátum.';
+      else if (status === 'past') errors.date = 'Vyberte dnešný alebo budúci dátum.';
+      else if (status === 'too-far') errors.date = 'Rezervovať je možné najviac ' + RULES.maxDaysAhead + ' dní dopredu.';
+      else if (status === 'closed') errors.date = 'V tento deň máme zatvorené.';
+      else if (status === 'barber-off') errors.date = 'Vybraný barber v tento deň nepracuje.';
+    }
+
+    if (!time) errors.time = 'Vyberte čas.';
+    else if (timeToMinutes(time) === null) errors.time = 'Zadajte čas vo formáte HH:MM.';
+
+    if (!name) errors.name = 'Zadajte meno a priezvisko.';
+    else if (name.length < 2) errors.name = 'Meno je príliš krátke.';
+    else if (name.length > 80) errors.name = 'Meno môže mať najviac 80 znakov.';
+    else if (!isValidName(name)) errors.name = 'Meno môže obsahovať iba písmená, medzery, pomlčky a apostrofy.';
+
+    if (!email) errors.email = 'Zadajte e-mail.';
+    else if (!isValidEmail(email)) errors.email = 'Zadajte platný e-mail, napríklad meno@domena.sk.';
+
+    if (!phoneRaw) errors.phone = 'Zadajte telefónne číslo.';
+    else if (!isValidPhone(phone)) errors.phone = 'Zadajte platné telefónne číslo, napríklad 0900 123 456.';
+
+    if (note.length > RULES.maxNoteLength) {
+      errors.note = 'Poznámka môže mať najviac ' + RULES.maxNoteLength + ' znakov.';
+    }
+
+    return {
+      valid: Object.keys(errors).length === 0,
+      errors,
+      values: { service, barber, date, time, name, email, phone, note },
+    };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Vytvorenie, zrušenie a vyhľadanie rezervácií                        */
+  /* ------------------------------------------------------------------ */
+
+  const ID_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+
+  /** Číslo rezervácie, napr. BS-7K2M9X. */
+  function generateId() {
+    let id = 'BS-';
+    for (let i = 0; i < 6; i++) id += ID_ALPHABET[Math.floor(Math.random() * ID_ALPHABET.length)];
+    return id;
+  }
+
+  const sameCustomer = (a, b) =>
+    normalizeEmail(a.email) === normalizeEmail(b.email) || normalizePhone(a.phone) === normalizePhone(b.phone);
+
+  const fail = (code, message, errors) => ({ ok: false, code, message, errors: errors || {} });
+
+  /**
+   * Vytvorí rezerváciu (nemení pole `bookings`, vracia nový objekt).
+   * Výsledok: { ok: true, booking } alebo { ok: false, code, message, errors }.
+   * Kódy chýb: VALIDATION, INVALID_TIME, SLOT_TAKEN, PAST, OUTSIDE_HOURS, CUSTOMER_OVERLAP.
+   */
+  function createBooking(input, bookings, now, idFactory) {
+    const check = validateBookingInput(input, now);
+    if (!check.valid) return fail('VALIDATION', 'Skontrolujte vyplnené údaje.', check.errors);
+
+    const { service, barber, date, time, name, email, phone, note } = check.values;
+
+    // Dostupnosť sa vždy znova overuje na aktuálnych dátach (ochrana pred dvojitou rezerváciou).
+    const slot = getDaySlots({ date, service, barber, bookings, now }).slots.find((s) => s.time === time);
+    if (!slot) return fail('INVALID_TIME', 'Tento čas nie je v ponuke.', { time: 'Tento čas nie je v ponuke.' });
+    if (slot.state === 'booked') {
+      return fail('SLOT_TAKEN', 'Tento termín je už obsadený. Vyberte iný čas.', { time: 'Termín je obsadený.' });
+    }
+    if (slot.reason === 'past') {
+      return fail('PAST', 'Tento čas už uplynul. Vyberte termín v budúcnosti.', { time: 'Čas už uplynul.' });
+    }
+    if (slot.reason === 'after-closing') {
+      return fail('OUTSIDE_HOURS', 'Služba sa do otváracích hodín nezmestí. Vyberte skorší čas.', {
+        time: 'Služba sa nezmestí do otváracích hodín.',
+      });
+    }
+
+    // Jeden zákazník nemôže byť v tom istom čase na dvoch miestach.
+    const start = timeToMinutes(time);
+    const end = start + service.duration;
+    const customer = { name, email, phone };
+    const clash = bookings.some(
+      (b) =>
+        b.status === STATUS.CONFIRMED &&
+        b.date === date &&
+        sameCustomer(b.customer, customer) &&
+        overlaps(start, end, timeToMinutes(b.time), timeToMinutes(b.time) + b.duration)
+    );
+    if (clash) {
+      return fail('CUSTOMER_OVERLAP', 'V tomto čase už máte inú rezerváciu.', {
+        time: 'V tomto čase už máte inú rezerváciu.',
+      });
+    }
+
+    const makeId = idFactory || generateId;
+    let id = makeId();
+    for (let i = 0; i < 20 && bookings.some((b) => b.id === id); i++) id = makeId();
+
+    return {
+      ok: true,
+      booking: {
+        id,
+        serviceId: service.id,
+        serviceName: service.name,
+        barberId: barber.id,
+        barberName: barber.name,
+        date,
+        time,
+        endTime: minutesToTime(end),
+        duration: service.duration,
+        price: service.price,
+        status: STATUS.CONFIRMED,
+        customer,
+        note,
+        createdAt: now.toISOString(),
+      },
+    };
+  }
+
+  /** Zobrazovaný stav: zrušená / uskutočnená (už skončila) / potvrdená. */
+  function getDisplayStatus(booking, now) {
+    if (booking.status === STATUS.CANCELLED) return STATUS.CANCELLED;
+    if (endDateTime(booking.date, booking.time, booking.duration).getTime() <= now.getTime()) {
+      return STATUS.COMPLETED;
+    }
+    return STATUS.CONFIRMED;
+  }
+
+  /** Rezerváciu je možné zrušiť, ak je potvrdená a ešte sa nezačala. */
+  function canCancel(booking, now) {
+    return (
+      booking.status === STATUS.CONFIRMED && startDateTime(booking.date, booking.time).getTime() > now.getTime()
+    );
+  }
+
+  /**
+   * Rozpozná, či ide o e-mail alebo telefón.
+   * Vráti { type: 'email' | 'phone', value } alebo null pri neplatnom vstupe.
+   */
+  function parseContactQuery(query) {
+    const raw = String(query || '').trim();
+    if (!raw) return null;
+    if (raw.includes('@')) {
+      const email = normalizeEmail(raw);
+      return isValidEmail(email) ? { type: 'email', value: email } : null;
+    }
+    const phone = normalizePhone(raw);
+    return isValidPhone(phone) ? { type: 'phone', value: phone } : null;
+  }
+
+  const matchesContact = (booking, contact) =>
+    contact.type === 'email'
+      ? normalizeEmail(booking.customer.email) === contact.value
+      : normalizePhone(booking.customer.phone) === contact.value;
+
+  /** Rezervácie zákazníka podľa e-mailu alebo telefónu, zoradené podľa termínu. */
+  function findBookings(query, bookings) {
+    const contact = parseContactQuery(query);
+    if (!contact) return [];
+    return bookings
+      .filter((b) => matchesContact(b, contact))
+      .sort((a, b) => (a.date + a.time < b.date + b.time ? -1 : a.date + a.time > b.date + b.time ? 1 : 0));
+  }
+
+  /**
+   * Zruší rezerváciu. `contactQuery` (e-mail alebo telefón) musí patriť zákazníkovi rezervácie.
+   * Výsledok: { ok: true, booking } alebo { ok: false, code, message };
+   * kódy: NOT_FOUND, FORBIDDEN, ALREADY_CANCELLED, PAST.
+   */
+  function cancelBooking(id, contactQuery, bookings, now) {
+    const booking = bookings.find((b) => b.id === id);
+    if (!booking) return fail('NOT_FOUND', 'Rezervácia sa nenašla.');
+    const contact = parseContactQuery(contactQuery);
+    if (!contact || !matchesContact(booking, contact)) {
+      return fail('FORBIDDEN', 'Túto rezerváciu nemôžete zrušiť.');
+    }
+    if (booking.status === STATUS.CANCELLED) return fail('ALREADY_CANCELLED', 'Rezervácia je už zrušená.');
+    if (!canCancel(booking, now)) return fail('PAST', 'Rezerváciu, ktorá sa už začala alebo skončila, nie je možné zrušiť.');
+    return { ok: true, booking: Object.assign({}, booking, { status: STATUS.CANCELLED, cancelledAt: now.toISOString() }) };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Pridanie do kalendára (.ics)                                        */
+  /* ------------------------------------------------------------------ */
+
+  /** Vytvorí obsah súboru .ics pre rezerváciu (lokálny čas bez časovej zóny). */
+  function buildICS(booking, now) {
+    const stamp = (iso, time) => iso.replace(/-/g, '') + 'T' + time.replace(':', '') + '00';
+    const utc = now.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const esc = (t) => String(t).replace(/([,;\\])/g, '\\$1').replace(/\n/g, '\\n');
+    return [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Barber Studio//Rezervacie//SK',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      'UID:' + booking.id + '@barberstudio.sk',
+      'DTSTAMP:' + utc,
+      'DTSTART:' + stamp(booking.date, booking.time),
+      'DTEND:' + stamp(booking.date, booking.endTime),
+      'SUMMARY:' + esc('Barber Studio: ' + booking.serviceName),
+      'DESCRIPTION:' + esc('Barber: ' + booking.barberName + '. Cena: ' + booking.price + ' EUR. Číslo rezervácie: ' + booking.id),
+      'LOCATION:' + esc(Data.SHOP.address),
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+  }
+
+  /**
+   * Odkaz na pridanie rezervácie do Google kalendára (funguje aj tam, kde nie je povolené sťahovanie súborov).
+   */
+  function googleCalendarUrl(booking) {
+    const stamp = (iso, time) => iso.replace(/-/g, '') + 'T' + time.replace(':', '') + '00';
+    const params = [
+      ['action', 'TEMPLATE'],
+      ['text', 'Barber Studio: ' + booking.serviceName],
+      ['dates', stamp(booking.date, booking.time) + '/' + stamp(booking.date, booking.endTime)],
+      ['ctz', 'Europe/Bratislava'],
+      ['details', 'Barber: ' + booking.barberName + '. Cena: ' + booking.price + ' EUR. Číslo rezervácie: ' + booking.id],
+      ['location', Data.SHOP.address],
+    ];
+    return 'https://calendar.google.com/calendar/render?' + params.map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&');
+  }
+
+  return Object.freeze({
+    STATUS,
+    pad,
+    toISODate,
+    parseISODate,
+    timeToMinutes,
+    minutesToTime,
+    addDays,
+    startDateTime,
+    endDateTime,
+    getService,
+    getBarber,
+    getOpeningHours,
+    barberOffers,
+    barberWorksOn,
+    getDateStatus,
+    getDaySlots,
+    listOpenDates,
+    findNextAvailable,
+    normalizeEmail,
+    normalizePhone,
+    isValidEmail,
+    isValidPhone,
+    validateBookingInput,
+    generateId,
+    createBooking,
+    getDisplayStatus,
+    canCancel,
+    parseContactQuery,
+    findBookings,
+    cancelBooking,
+    buildICS,
+    googleCalendarUrl,
+  });
+});
+
+/**
+ * storage.js – ukladanie rezervácií (localStorage s náhradným úložiskom v pamäti),
+ * ukážkové dáta a "služba rezervácií", ktorá spája úložisko s logikou z booking-logic.js.
+ *
+ * Demo verzia nemá server: všetko sa ukladá iba v prehliadači návštevníka.
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('./data.js'), require('./booking-logic.js'));
+  } else {
+    root.BookingStorage = factory(root.BarberData, root.BookingLogic);
+  }
+})(typeof self !== 'undefined' ? self : this, function (Data, Logic) {
+  'use strict';
+
+  const STORAGE_KEY = 'barberstudio.bookings.v1';
+
+  /* ------------------------------------------------------------------ */
+  /* Úložisko                                                            */
+  /* ------------------------------------------------------------------ */
+
+  /** Jednoduché úložisko v pamäti so rovnakým rozhraním ako localStorage. */
+  function createMemoryBackend() {
+    const data = new Map();
+    return {
+      getItem: (k) => (data.has(k) ? data.get(k) : null),
+      setItem: (k, v) => void data.set(k, String(v)),
+      removeItem: (k) => void data.delete(k),
+    };
+  }
+
+  /** Použije localStorage, ak funguje (napr. v súkromnom režime môže byť zablokovaný). */
+  function detectBackend() {
+    try {
+      const ls = typeof localStorage !== 'undefined' ? localStorage : null;
+      if (!ls) return createMemoryBackend();
+      const probe = '__barberstudio_probe__';
+      ls.setItem(probe, '1');
+      ls.removeItem(probe);
+      return ls;
+    } catch (err) {
+      return createMemoryBackend();
+    }
+  }
+
+  /** Načíta zoznam rezervácií; null = nič uložené alebo poškodené dáta. */
+  function loadList(backend, key) {
+    try {
+      const raw = backend.getItem(key);
+      if (raw === null || raw === undefined) return null;
+      const list = JSON.parse(raw);
+      return Array.isArray(list) ? list : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Ukážkové dáta                                                       */
+  /* ------------------------------------------------------------------ */
+
+  const PEOPLE = [
+    { name: 'Martin Šimko', email: 'martin.simko@example.com', phone: '+421905111222' },
+    { name: 'Jakub Varga', email: 'jakub.varga@example.com', phone: '+421905333444' },
+    { name: 'Michal Tóth', email: 'michal.toth@example.com', phone: '+421905555666' },
+    { name: 'Adam Baláž', email: 'adam.balaz@example.com', phone: '+421905777888' },
+    { name: 'Filip Kollár', email: 'filip.kollar@example.com', phone: '+421905999000' },
+    { name: 'Samuel Hudec', email: 'samuel.hudec@example.com', phone: '+421911222333' },
+    { name: 'Roman Polák', email: 'roman.polak@example.com', phone: '+421911444555' },
+    { name: 'Dávid Urban', email: 'david.urban@example.com', phone: '+421911666777' },
+  ];
+
+  /**
+   * Plán ukážkových rezervácií: [barber, n-tý pracovný deň barbera od dnes, čas, služba, osoba].
+   * "demo" = demo zákazník (demo@example.com). Rezervácie, ktoré by nesedeli do otváracích hodín
+   * (napr. v sobotu po 14:00), sa pri generovaní bezpečne preskočia.
+   */
+  const SEED_PLAN = [
+    ['marek', 0, '09:00', 'strih-brada', 0],
+    ['marek', 0, '10:30', 'panski-strih', 1],
+    ['marek', 0, '14:00', 'kralovsky', 2],
+    ['marek', 1, '09:00', 'skin-fade', 3],
+    ['marek', 1, '11:00', 'strih-styling', 'demo'],
+    ['marek', 1, '16:30', 'uprava-brady', 4],
+    ['marek', 2, '10:00', 'panski-strih', 5],
+    ['marek', 2, '13:00', 'strih-brada', 6],
+    ['tomas', 0, '09:30', 'skin-fade', 7],
+    ['tomas', 0, '10:30', 'strih-styling', 0],
+    ['tomas', 0, '15:00', 'detsky-strih', 1],
+    ['tomas', 1, '09:00', 'strojcek', 2],
+    ['tomas', 1, '12:00', 'skin-fade', 3],
+    ['tomas', 1, '17:00', 'strih-brada', 4],
+    ['tomas', 2, '09:00', 'panski-strih', 5],
+    ['tomas', 2, '09:30', 'detsky-strih', 6],
+    ['lukas', 0, '11:00', 'holenie-britvou', 7],
+    ['lukas', 0, '12:00', 'strih-brada', 0],
+    ['lukas', 0, '16:00', 'kralovsky', 1],
+    ['lukas', 1, '09:00', 'uprava-brady', 2],
+    ['lukas', 1, '10:00', 'farbenie', 3],
+    ['lukas', 1, '15:30', 'holenie-britvou', 'demo'],
+    ['lukas', 2, '13:00', 'strih-brada', 4],
+  ];
+
+  /** n-tý pracovný deň barbera (otvorené + barber pracuje), počítané od dnes. */
+  function nthWorkingDay(barber, n, now) {
+    let seen = -1;
+    let iso = Logic.toISODate(now);
+    for (let i = 0; i <= 60; i++, iso = Logic.addDays(iso, 1)) {
+      if (Logic.getDateStatus(iso, now, barber) === 'ok') {
+        seen++;
+        if (seen === n) return iso;
+      }
+    }
+    return null;
+  }
+
+  /** Posledný otvorený deň pred dneškom, keď barber pracoval (pre ukážku uplynulej rezervácie). */
+  function previousWorkingDay(barber, now) {
+    let iso = Logic.addDays(Logic.toISODate(now), -1);
+    for (let i = 0; i < 14; i++, iso = Logic.addDays(iso, -1)) {
+      if (Logic.getOpeningHours(iso) && Logic.barberWorksOn(barber, iso)) return iso;
+    }
+    return null;
+  }
+
+  /** Vytvorí ukážkové rezervácie vzhľadom na aktuálny čas (vždy v budúcnosti). */
+  function buildSeedBookings(now) {
+    const bookings = [];
+    let counter = 0;
+    const idFactory = () => 'BS-DEMO' + String(++counter).padStart(2, '0');
+
+    SEED_PLAN.forEach(([barberId, nth, time, serviceId, person]) => {
+      const barber = Logic.getBarber(barberId);
+      const date = nthWorkingDay(barber, nth, now);
+      if (!date) return;
+      const customer = person === 'demo' ? Data.DEMO_CUSTOMER : PEOPLE[person];
+      const result = Logic.createBooking(
+        {
+          serviceId,
+          barberId,
+          date,
+          time,
+          name: customer.name,
+          email: customer.email,
+          phone: customer.phone,
+          note: '',
+        },
+        bookings,
+        now,
+        idFactory
+      );
+      if (result.ok) bookings.push(result.booking);
+    });
+
+    // Ukážka histórie demo zákazníka: uskutočnená a zrušená rezervácia.
+    const marek = Logic.getBarber('marek');
+    const past = previousWorkingDay(marek, now);
+    const service = Logic.getService('strih-styling');
+    if (past) {
+      bookings.push({
+        id: 'BS-DEMO90',
+        serviceId: service.id,
+        serviceName: service.name,
+        barberId: marek.id,
+        barberName: marek.name,
+        date: past,
+        time: '10:00',
+        endTime: '10:45',
+        duration: service.duration,
+        price: service.price,
+        status: Logic.STATUS.CONFIRMED,
+        customer: Object.assign({}, Data.DEMO_CUSTOMER),
+        note: '',
+        createdAt: now.toISOString(),
+      });
+    }
+    const cancelledDate = nthWorkingDay(marek, 2, now);
+    const beard = Logic.getService('uprava-brady');
+    if (cancelledDate) {
+      bookings.push({
+        id: 'BS-DEMO91',
+        serviceId: beard.id,
+        serviceName: beard.name,
+        barberId: marek.id,
+        barberName: marek.name,
+        date: cancelledDate,
+        time: '15:00',
+        endTime: '15:30',
+        duration: beard.duration,
+        price: beard.price,
+        status: Logic.STATUS.CANCELLED,
+        customer: Object.assign({}, Data.DEMO_CUSTOMER),
+        note: '',
+        createdAt: now.toISOString(),
+        cancelledAt: now.toISOString(),
+      });
+    }
+    return bookings;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Služba rezervácií                                                   */
+  /* ------------------------------------------------------------------ */
+
+  /**
+   * Spája úložisko s logikou. Pri každej operácii sa zoznam načíta znova z úložiska,
+   * takže dvojitá rezervácia je vylúčená aj pri dvoch otvorených kartách prehliadača.
+   *
+   * @param {object} [options]
+   * @param {object} [options.backend] úložisko (predvolene localStorage alebo pamäť)
+   * @param {function(): Date} [options.now] funkcia vracajúca aktuálny čas
+   * @param {string} [options.key] kľúč v úložisku
+   */
+  function createBookingService(options) {
+    const opts = options || {};
+    const backend = opts.backend || detectBackend();
+    const now = opts.now || (() => new Date());
+    const key = opts.key || STORAGE_KEY;
+
+    const read = () => loadList(backend, key) || [];
+    const write = (list) => backend.setItem(key, JSON.stringify(list));
+
+    // Prvé spustenie (alebo poškodené dáta): naplní ukážkové dáta.
+    if (loadList(backend, key) === null) write(buildSeedBookings(now()));
+
+    return {
+      /** Všetky rezervácie (pre kontrolu dostupnosti). */
+      getAll: read,
+
+      /** Mriežka termínov pre deň, službu a barbera podľa aktuálnych dát. */
+      getDaySlots(date, service, barber) {
+        return Logic.getDaySlots({ date, service, barber, bookings: read(), now: now() });
+      },
+
+      /** Vytvorí a uloží rezerváciu, ak je termín stále voľný. */
+      create(input) {
+        const list = read();
+        const result = Logic.createBooking(input, list, now());
+        if (result.ok) {
+          list.push(result.booking);
+          write(list);
+        }
+        return result;
+      },
+
+      /** Rezervácie podľa e-mailu alebo telefónu. */
+      find: (query) => Logic.findBookings(query, read()),
+
+      /** Zruší rezerváciu (termín sa tým uvoľní). */
+      cancel(id, contactQuery) {
+        const list = read();
+        const result = Logic.cancelBooking(id, contactQuery, list, now());
+        if (result.ok) {
+          write(list.map((b) => (b.id === id ? result.booking : b)));
+        }
+        return result;
+      },
+
+      /** Obnoví pôvodné ukážkové dáta. */
+      reset() {
+        write(buildSeedBookings(now()));
+      },
+    };
+  }
+
+  return Object.freeze({
+    STORAGE_KEY,
+    createMemoryBackend,
+    detectBackend,
+    buildSeedBookings,
+    createBookingService,
+  });
+});
+
+/**
+ * app.js – používateľské rozhranie: vykresľovanie sekcií, rezervačný formulár,
+ * potvrdenie, správa rezervácií a navigácia.
+ *
+ * Používateľské vstupy sa nikdy nevkladajú cez innerHTML (iba cez textContent),
+ * takže meno ani poznámka zákazníka nemôžu vložiť HTML ani skript.
+ */
+(function () {
+  'use strict';
+
+  const Data = window.BarberData;
+  const Logic = window.BookingLogic;
+  const Store = window.BookingStorage;
+
+  const now = () => new Date();
+  const bookings = Store.createBookingService({ now });
+
+  /* ------------------------------------------------------------------ */
+  /* Pomocné funkcie                                                     */
+  /* ------------------------------------------------------------------ */
+
+  const $ = (selector, root) => (root || document).querySelector(selector);
+  const $$ = (selector, root) => Array.from((root || document).querySelectorAll(selector));
+
+  /** Vytvorí DOM element: h('div', { class: 'x', text: '...' }, ...deti). */
+  function h(tag, attrs, ...children) {
+    const el = document.createElement(tag);
+    Object.entries(attrs || {}).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === false) return;
+      if (key === 'class') el.className = value;
+      else if (key === 'text') el.textContent = value;
+      else if (key === 'dataset') Object.assign(el.dataset, value);
+      else if (key.startsWith('on') && typeof value === 'function') el.addEventListener(key.slice(2), value);
+      else if (value === true) el.setAttribute(key, '');
+      else el.setAttribute(key, value);
+    });
+    children.flat().forEach((child) => {
+      if (child === null || child === undefined || child === false) return;
+      el.append(child.nodeType ? child : document.createTextNode(String(child)));
+    });
+    return el;
+  }
+
+  const NBSP = ' ';
+  const fmtPrice = (n) => String(n).replace('.', ',') + NBSP + '€';
+  const fmtDuration = (min) => min + NBSP + 'min';
+  const fmtTime = (t) => t.replace(/^0/, '');
+
+  const longDate = new Intl.DateTimeFormat('sk-SK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const midDate = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'long' });
+  const chipDate = new Intl.DateTimeFormat('sk-SK', { weekday: 'short', day: 'numeric', month: 'numeric' });
+  const weekdayName = new Intl.DateTimeFormat('sk-SK', { weekday: 'long' });
+
+  const fmtDateLong = (iso) => longDate.format(Logic.parseISODate(iso));
+  const fmtDateMid = (iso) => midDate.format(Logic.parseISODate(iso));
+  const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  const STATUS_LABELS = { confirmed: 'Potvrdená', cancelled: 'Zrušená', completed: 'Uskutočnená' };
+  const DAY_SHORT = ['Ne', 'Po', 'Ut', 'St', 'Št', 'Pi', 'So'];
+
+  /** Pracovné dni barbera ako text, napr. "Po–So" alebo "Ut–So". */
+  function workDaysText(barber) {
+    const order = [1, 2, 3, 4, 5, 6, 0];
+    const days = order.filter((d) => barber.workDays.includes(d));
+    const runs = [];
+    days.forEach((d) => {
+      const last = runs[runs.length - 1];
+      if (last && order.indexOf(d) === order.indexOf(last[last.length - 1]) + 1) last.push(d);
+      else runs.push([d]);
+    });
+    return runs
+      .map((run) => (run.length > 2 ? DAY_SHORT[run[0]] + '–' + DAY_SHORT[run[run.length - 1]] : run.map((d) => DAY_SHORT[d]).join(', ')))
+      .join(', ');
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Avatary barberov (SVG, bez externých obrázkov)                      */
+  /* ------------------------------------------------------------------ */
+
+  function avatarSVG(barber, crop) {
+    const l = barber.look;
+    const hair = {
+      slick: `<path d="M36 47c-3-21 11-31 24-31s27 10 23 31c-3-9-8-15-23-15-14 0-20 5-24 15z" fill="${l.hair}"/>`,
+      fade: `<path d="M38 45c-1-19 9-27 22-27s23 8 22 27c-3-7-8-9-22-9s-19 2-22 9z" fill="${l.hair}"/>`,
+      curly:
+        `<g fill="${l.hair}"><circle cx="44" cy="36" r="9"/><circle cx="53" cy="27" r="10"/><circle cx="67" cy="27" r="10"/>` +
+        `<circle cx="76" cy="36" r="9"/><circle cx="60" cy="24" r="9"/>` +
+        `<path d="M39 47c0-9 4-15 21-15s21 6 21 15c-3-7-8-10-21-10s-18 3-21 10z"/></g>`,
+    }[l.style];
+    const beard = l.hasBeard
+      ? `<path d="M39 52c1 22 11 31 21 31s20-9 21-31c-2 9-7 14-21 14s-19-5-21-14z" fill="${l.beard}"/>`
+      : '';
+    return (
+      '<svg viewBox="' + (crop || '0 0 120 120') + '" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect class="av-bg" width="120" height="120" fill="#d9cdbb"/>' +
+      `<rect x="52" y="68" width="16" height="20" rx="7" fill="${l.skin}"/>` +
+      '<rect x="52" y="68" width="16" height="20" rx="7" fill="#000" opacity=".18"/>' +
+      '<path d="M10 124c3-25 21-38 50-38s47 13 50 38z" fill="#26221c"/>' +
+      '<path d="M46 86l14 18 14-18" fill="none" stroke="#f2a05a" stroke-width="3"/>' +
+      `<ellipse cx="60" cy="52" rx="21" ry="25" fill="${l.skin}"/>` +
+      beard +
+      hair +
+      '<circle cx="51" cy="51" r="1.9" fill="#1a1410"/><circle cx="69" cy="51" r="1.9" fill="#1a1410"/>' +
+      '<path d="M54 63h12" stroke="#000" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>' +
+      '</svg>'
+    );
+  }
+
+  const WORKS = [
+    { name: 'Skin fade', note: 'Plynulý prechod do kože', bg: '#6b5748', look: { style: 'fade', hair: '#15100d', skin: '#d9a984', hasBeard: true, beard: '#1b1410' } },
+    { name: 'Klasický strih', note: 'Nožnice a hrebeň', bg: '#8a6f58', look: { style: 'slick', hair: '#3a2a20', skin: '#e6bd9a', hasBeard: false, beard: '#3a2a20' } },
+    { name: 'Strih a brada', note: 'Upravené kontúry', bg: '#4f4039', look: { style: 'curly', hair: '#2a1a12', skin: '#c68f6a', hasBeard: true, beard: '#2a1a12' } },
+    { name: 'Moderný styling', note: 'Textúra a objem', bg: '#a58468', look: { style: 'slick', hair: '#6b4a2f', skin: '#efc8a6', hasBeard: true, beard: '#6b4a2f' } }
+  ];
+
+  function renderWorks() {
+    const list = $('#works-list');
+    if (!list) return;
+    list.replaceChildren(
+      ...WORKS.map((w) => {
+        const li = h('li', { class: 'work' });
+        li.style.setProperty('--avatar-bg', w.bg);
+        const wrap = h('span', { class: 'work-img' });
+        wrap.innerHTML = avatarSVG({ look: w.look }, '22 10 76 84'); // statické dáta
+        li.append(wrap, h('span', { class: 'work-tag' }, h('strong', { text: w.name }), h('small', { text: w.note })));
+        return li;
+      })
+    );
+  }
+
+  function avatar(barber) {
+    const wrap = h('span');
+    wrap.innerHTML = avatarSVG(barber); // dáta sú statické, nie od používateľa
+    return wrap.firstChild;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Stav formulára                                                      */
+  /* ------------------------------------------------------------------ */
+
+  const state = { serviceId: '', barberId: '', date: '', time: '', lookupQuery: '' };
+
+  const els = {
+    form: $('#booking-form'),
+    layout: $('.booking-layout'),
+    service: $('#service'),
+    barberChoices: $('#barber-choices'),
+    date: $('#date'),
+    chips: $('#date-chips'),
+    slots: $('#time-slots'),
+    slotsMessage: $('#slots-message'),
+    legend: $('#slots-legend'),
+    name: $('#name'),
+    email: $('#email'),
+    phone: $('#phone'),
+    note: $('#note'),
+    noteCount: $('#note-count'),
+    consent: $('#consent'),
+    formError: $('#form-error'),
+    confirmation: $('#confirmation'),
+    toast: $('#toast'),
+    lookupForm: $('#lookup-form'),
+    lookupInput: $('#lookup-input'),
+    results: $('#my-bookings-results'),
+  };
+
+  const currentService = () => Logic.getService(state.serviceId);
+  const currentBarber = () => Logic.getBarber(state.barberId);
+
+  /* ------------------------------------------------------------------ */
+  /* Vykresľovanie statických sekcií                                     */
+  /* ------------------------------------------------------------------ */
+
+  function renderServices() {
+    $('#services-list').replaceChildren(
+      ...Data.SERVICES.map((s) =>
+        h(
+          'li',
+          { class: 'menu-item', dataset: { serviceId: s.id } },
+          h(
+            'div',
+            { class: 'menu-row' },
+            h('h3', { class: 'menu-name', text: s.name }),
+            h('span', { class: 'menu-leader', 'aria-hidden': 'true' }),
+            h('span', { class: 'menu-price', text: fmtPrice(s.price) })
+          ),
+          h('p', { class: 'menu-desc', text: s.description }),
+          h(
+            'div',
+            { class: 'menu-foot' },
+            h('span', { class: 'menu-duration', text: 'Trvanie: ' + fmtDuration(s.duration) }),
+            h('button', {
+              type: 'button',
+              class: 'btn btn-ghost btn-small',
+              'aria-label': 'Rezervovať službu ' + s.name,
+              text: 'Rezervovať',
+              onclick: () => startBooking({ serviceId: s.id }),
+            })
+          )
+        )
+      )
+    );
+  }
+
+  function renderBarbers() {
+    $('#barbers-list').replaceChildren(
+      ...Data.BARBERS.map((b) =>
+        h(
+          'article',
+          { class: 'barber', dataset: { barberId: b.id } },
+          h(
+            'div',
+            { class: 'barber-avatar' },
+            avatar(b),
+            h('div', { class: 'barber-tag' }, h('h3', { text: b.name }), h('p', { text: b.role }))
+          ),
+          h(
+            'div',
+            { class: 'barber-body' },
+            h('p', { class: 'barber-bio', text: b.bio }),
+            h('p', { class: 'barber-label', text: 'Ponúka' }),
+            h('ul', { class: 'barber-services' }, b.services.map((id) => h('li', { text: Logic.getService(id).name }))),
+            h('p', { class: 'barber-days', text: 'Pracuje: ' + workDaysText(b) }),
+            h('button', {
+              type: 'button',
+              class: 'btn btn-dark btn-small',
+              'aria-label': 'Rezervovať termín u barbera ' + b.name,
+              text: 'Rezervovať termín',
+              onclick: () => startBooking({ barberId: b.id }),
+            })
+          )
+        )
+      )
+    );
+  }
+
+  /** Oranžová karta s odporúčanou službou vedľa cenníka. */
+  function renderFeatured() {
+    const s = Logic.getService('kralovsky');
+    $('#featured-service').replaceChildren(
+      h('p', { class: 'featured-label', text: 'Odporúčame' }),
+      h('h3', { text: s.name }),
+      h('p', { text: s.description }),
+      h('div', { class: 'featured-price' }, h('strong', { text: fmtPrice(s.price) }), h('span', { text: fmtDuration(s.duration) })),
+      h('button', {
+        type: 'button',
+        class: 'btn btn-dark',
+        'aria-label': 'Rezervovať službu ' + s.name,
+        text: 'Rezervovať balíček',
+        onclick: () => startBooking({ serviceId: s.id }),
+      })
+    );
+  }
+
+  /** Rýchla rezervačná karta v hero sekcii: predvyberie službu a barbera vo formulári. */
+  function initQuickCard() {
+    const serviceSelect = $('#quick-service');
+    const barberSelect = $('#quick-barber');
+    Data.SERVICES.forEach((s) =>
+      serviceSelect.append(h('option', { value: s.id, text: `${s.name} (${fmtDuration(s.duration)}, ${fmtPrice(s.price)})` }))
+    );
+    Data.BARBERS.forEach((b) => barberSelect.append(h('option', { value: b.id, text: b.name })));
+
+    const sync = () => {
+      const service = Logic.getService(serviceSelect.value);
+      const barber = Logic.getBarber(barberSelect.value);
+      $$('option', serviceSelect).forEach((o) => {
+        if (o.value) o.disabled = !!barber && !Logic.barberOffers(barber, o.value);
+      });
+      $$('option', barberSelect).forEach((o) => {
+        if (o.value) o.disabled = !!service && !Logic.barberOffers(Logic.getBarber(o.value), service.id);
+      });
+    };
+    serviceSelect.addEventListener('change', sync);
+    barberSelect.addEventListener('change', sync);
+
+    $('#quick-go').addEventListener('click', (event) => {
+      event.preventDefault();
+      startBooking({ serviceId: serviceSelect.value || undefined, barberId: barberSelect.value || undefined });
+    });
+  }
+
+  function renderFormChoices() {
+    els.service.append(
+      ...Data.SERVICES.map((s) =>
+        h('option', { value: s.id, text: `${s.name} (${fmtDuration(s.duration)}, ${fmtPrice(s.price)})` })
+      )
+    );
+
+    els.barberChoices.replaceChildren(
+      ...Data.BARBERS.map((b) =>
+        h(
+          'label',
+          { class: 'barber-choice' },
+          h('input', { type: 'radio', name: 'barber', value: b.id, id: 'barber-' + b.id }),
+          h(
+            'span',
+            { class: 'barber-choice-body' },
+            h('span', { class: 'barber-choice-avatar' }, avatar(b)),
+            h(
+              'span',
+              {},
+              h('span', { class: 'barber-choice-name', text: b.name }),
+              h('span', { class: 'barber-choice-note', dataset: { role: b.role }, text: b.role })
+            )
+          )
+        )
+      )
+    );
+  }
+
+  function renderOpeningInfo() {
+    const t = now();
+    const todayIso = Logic.toISODate(t);
+
+    const row = $(`#hours-table tr[data-day="${t.getDay()}"]`);
+    if (row) row.classList.add('is-today');
+
+    const el = $('#open-now');
+    const hours = Logic.getOpeningHours(todayIso);
+    const minutes = t.getHours() * 60 + t.getMinutes();
+    el.classList.remove('is-open');
+
+    if (hours && minutes >= Logic.timeToMinutes(hours.open) && minutes < Logic.timeToMinutes(hours.close)) {
+      el.classList.add('is-open');
+      el.textContent = 'Teraz otvorené, zatvárame o ' + fmtTime(hours.close) + '.';
+      return;
+    }
+    // zatvorené: nájde najbližší otvorený okamih
+    let iso = todayIso;
+    for (let i = 0; i < 8; i++, iso = Logic.addDays(iso, 1)) {
+      const h2 = Logic.getOpeningHours(iso);
+      if (!h2) continue;
+      if (i === 0 && minutes >= Logic.timeToMinutes(h2.open)) continue;
+      const when = i === 0 ? 'dnes' : i === 1 ? 'zajtra' : weekdayName.format(Logic.parseISODate(iso));
+      el.textContent = 'Teraz zatvorené. Najbližšie otvárame: ' + when + ' o ' + fmtTime(h2.open) + '.';
+      return;
+    }
+  }
+
+  /** Karta "Najbližší voľný termín" v hero sekcii. */
+  function renderNextSlot() {
+    const box = $('#next-slot');
+    const service = Logic.getService('panski-strih');
+    const next = Logic.findNextAvailable({ service, bookings: bookings.getAll(), now: now() });
+    if (!next) {
+      box.hidden = true;
+      return;
+    }
+    const todayIso = Logic.toISODate(now());
+    const dayLabel =
+      next.date === todayIso
+        ? 'Dnes'
+        : next.date === Logic.addDays(todayIso, 1)
+        ? 'Zajtra'
+        : capitalize(weekdayName.format(Logic.parseISODate(next.date)));
+
+    $('#next-slot-when').textContent = `${dayLabel} o ${fmtTime(next.time)}`;
+    $('#next-slot-detail').textContent = `${fmtDateMid(next.date)}, ${next.barber.name}, ${service.name}`;
+    const button = $('#next-slot-book');
+    button.onclick = () => startBooking({ serviceId: service.id, barberId: next.barber.id, date: next.date, time: next.time });
+    box.hidden = false;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Rezervačný formulár                                                 */
+  /* ------------------------------------------------------------------ */
+
+  /** Zablokuje služby a barberov, ktorí k sebe nepasujú. */
+  function syncChoices() {
+    const service = currentService();
+    const barber = currentBarber();
+
+    $$('option', els.service).forEach((opt) => {
+      if (!opt.value) return;
+      opt.disabled = !!barber && !Logic.barberOffers(barber, opt.value);
+    });
+
+    $$('input[name="barber"]', els.barberChoices).forEach((input) => {
+      const b = Logic.getBarber(input.value);
+      const unsupported = !!service && !Logic.barberOffers(b, service.id);
+      input.disabled = unsupported;
+      input.checked = state.barberId === b.id;
+      const note = $('.barber-choice-note', input.closest('label'));
+      note.textContent = unsupported ? 'Túto službu neponúka' : note.dataset.role;
+    });
+  }
+
+  function renderDateChips() {
+    const barber = currentBarber();
+    const dates = Logic.listOpenDates(now(), 8, barber);
+    els.chips.replaceChildren(
+      ...dates.map((iso) =>
+        h('button', {
+          type: 'button',
+          class: 'chip',
+          dataset: { date: iso },
+          'aria-pressed': String(state.date === iso),
+          'aria-label': fmtDateLong(iso),
+          text: chipDate.format(Logic.parseISODate(iso)),
+          onclick: () => setDate(iso),
+        })
+      )
+    );
+  }
+
+  function setDate(iso) {
+    state.date = iso;
+    els.date.value = iso;
+    clearError('date');
+    refreshAll();
+  }
+
+  const reasonTitle = (slot) =>
+    slot.state === 'booked'
+      ? 'Obsadené'
+      : slot.reason === 'past'
+      ? 'Tento čas už uplynul'
+      : slot.reason === 'after-closing'
+      ? 'Služba by presiahla otváracie hodiny'
+      : '';
+
+  function dateStatusMessage(status, barber) {
+    switch (status) {
+      case 'closed':
+        return 'V tento deň máme zatvorené. Vyberte iný dátum.';
+      case 'past':
+        return 'Vyberte dnešný alebo budúci dátum.';
+      case 'too-far':
+        return `Rezervovať je možné najviac ${Data.RULES.maxDaysAhead} dní dopredu.`;
+      case 'barber-off':
+        return `${barber.name} v tento deň nepracuje. Vyberte iný dátum alebo iného barbera.`;
+      default:
+        return 'Zadajte platný dátum.';
+    }
+  }
+
+  /** Prekreslí mriežku termínov podľa aktuálneho výberu a uložených rezervácií. */
+  function refreshSlots() {
+    const service = currentService();
+    const barber = currentBarber();
+    els.slots.replaceChildren();
+    els.legend.hidden = true;
+    els.slotsMessage.classList.remove('is-warning');
+
+    if (!service || !barber || !state.date) {
+      els.slotsMessage.textContent = 'Najprv vyberte službu, barbera a dátum.';
+      return;
+    }
+
+    const day = bookings.getDaySlots(state.date, service, barber);
+    if (day.status !== 'ok') {
+      state.time = '';
+      els.slotsMessage.textContent = dateStatusMessage(day.status, barber);
+      els.slotsMessage.classList.add('is-warning');
+      return;
+    }
+
+    if (state.time && !day.slots.some((s) => s.time === state.time && s.state === 'available')) state.time = '';
+
+    els.slots.replaceChildren(
+      ...day.slots.map((s) => {
+        const id = 'slot-' + s.time.replace(':', '');
+        const cls = 'slot' + (s.state === 'booked' ? ' is-booked' : s.state === 'unavailable' ? ' is-off' : '');
+        return h(
+          'label',
+          { class: cls, for: id, title: reasonTitle(s) || null, dataset: { state: s.state } },
+          h('input', { type: 'radio', name: 'time', id, value: s.time, disabled: s.state !== 'available', checked: s.time === state.time }),
+          h('span', { class: 'slot-body', text: fmtTime(s.time) }),
+          s.state === 'booked' ? h('span', { class: 'visually-hidden', text: ', obsadené' }) : null,
+          s.state === 'unavailable' ? h('span', { class: 'visually-hidden', text: ', nedostupné' }) : null
+        );
+      })
+    );
+
+    const free = day.slots.filter((s) => s.state === 'available').length;
+    if (free) {
+      els.slotsMessage.textContent = `Voľných termínov: ${free}. Dĺžka služby: ${fmtDuration(service.duration)}.`;
+    } else {
+      els.slotsMessage.textContent = 'Na tento deň už nie sú voľné termíny. Vyberte iný dátum alebo barbera.';
+      els.slotsMessage.classList.add('is-warning');
+    }
+    els.legend.hidden = false;
+  }
+
+  /** Zhrnutie rezervácie vedľa formulára. */
+  function updateSlip() {
+    const service = currentService();
+    const barber = currentBarber();
+    const set = (id, text) => {
+      const dd = $('#slip-' + id);
+      dd.textContent = text || dd.dataset.empty;
+      dd.classList.toggle('is-empty', !text);
+    };
+    set('service', service ? `${service.name} (${fmtDuration(service.duration)})` : '');
+    set('barber', barber ? barber.name : '');
+    set('date', state.date && Logic.parseISODate(state.date) ? capitalize(fmtDateLong(state.date)) : '');
+    let timeText = '';
+    if (state.time && service) {
+      timeText = `${fmtTime(state.time)} – ${fmtTime(Logic.minutesToTime(Logic.timeToMinutes(state.time) + service.duration))}`;
+    }
+    set('time', timeText);
+    $('#slip-price').textContent = service ? fmtPrice(service.price) : fmtPrice(0);
+  }
+
+  function refreshAll() {
+    syncChoices();
+    renderDateChips();
+    refreshSlots();
+    updateSlip();
+  }
+
+  /** Predvyplní formulár (tlačidlá v cenníku, kartách barberov a v hero) a posunie stránku k rezervácii. */
+  function startBooking(preset) {
+    if (!els.confirmation.hidden) showForm();
+    if (preset.serviceId) {
+      state.serviceId = preset.serviceId;
+      els.service.value = preset.serviceId;
+      clearError('service');
+    }
+    if (preset.barberId) {
+      const b = Logic.getBarber(preset.barberId);
+      const service = currentService();
+      if (!service || Logic.barberOffers(b, service.id)) {
+        state.barberId = preset.barberId;
+        clearError('barber');
+      }
+    }
+    if (preset.date) {
+      state.date = preset.date;
+      els.date.value = preset.date;
+      clearError('date');
+    }
+    if (preset.time) state.time = preset.time;
+    refreshAll();
+    $('#rezervacia').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ----- Chyby formulára ----- */
+
+  const FIELD_CONTROLS = {
+    service: '#service',
+    date: '#date',
+    name: '#name',
+    email: '#email',
+    phone: '#phone',
+    note: '#note',
+    consent: '#consent',
+  };
+  const FIELD_ORDER = ['service', 'barber', 'date', 'time', 'name', 'email', 'phone', 'note', 'consent'];
+
+  function setError(field, message) {
+    const target = $('#' + field + '-error');
+    if (target) target.textContent = message || '';
+    const control = FIELD_CONTROLS[field] && $(FIELD_CONTROLS[field]);
+    if (control) {
+      if (message) control.setAttribute('aria-invalid', 'true');
+      else control.removeAttribute('aria-invalid');
+    }
+  }
+  const clearError = (field) => setError(field, '');
+
+  function clearErrors() {
+    FIELD_ORDER.forEach(clearError);
+    els.formError.textContent = '';
+  }
+
+  function showErrors(errors) {
+    FIELD_ORDER.forEach((field) => setError(field, errors[field] || ''));
+  }
+
+  function focusFirstError(errors) {
+    const field = FIELD_ORDER.find((f) => errors[f]);
+    if (!field) return;
+    let target = null;
+    if (field === 'barber') target = $('input[name="barber"]:not(:disabled)', els.barberChoices);
+    else if (field === 'time') target = $('input[name="time"]:not(:disabled)', els.slots) || els.slotsMessage;
+    else target = $(FIELD_CONTROLS[field]);
+    if (target) {
+      if (!target.matches('input, select, textarea, button')) target.setAttribute('tabindex', '-1');
+      target.focus();
+    }
+  }
+
+  const collectInput = () => ({
+    serviceId: state.serviceId,
+    barberId: state.barberId,
+    date: state.date,
+    time: state.time,
+    name: els.name.value,
+    email: els.email.value,
+    phone: els.phone.value,
+    note: els.note.value,
+  });
+
+  function validateAll() {
+    const errors = Object.assign({}, Logic.validateBookingInput(collectInput(), now()).errors);
+    if (!els.consent.checked) errors.consent = 'Pre odoslanie rezervácie je potrebný súhlas so spracovaním údajov.';
+    return errors;
+  }
+
+  /** Kontrola jedného poľa (pri opustení poľa alebo úprave poľa s chybou). */
+  function validateField(field) {
+    const errors = validateAll();
+    setError(field, errors[field] || '');
+  }
+
+  function showToast(message) {
+    els.toast.textContent = message;
+    els.toast.classList.add('is-visible');
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => els.toast.classList.remove('is-visible'), 5000);
+  }
+
+  /* ----- Odoslanie ----- */
+
+  function onSubmit(event) {
+    event.preventDefault();
+    els.formError.textContent = '';
+
+    const errors = validateAll();
+    if (Object.keys(errors).length) {
+      showErrors(errors);
+      els.formError.textContent = 'Skontrolujte zvýraznené polia a skúste to znova.';
+      focusFirstError(errors);
+      return;
+    }
+
+    // Dostupnosť sa pri uložení znova overuje na aktuálnych dátach.
+    const result = bookings.create(collectInput());
+    if (!result.ok) {
+      showErrors(result.errors || {});
+      els.formError.textContent = result.message;
+      if (['SLOT_TAKEN', 'INVALID_TIME', 'PAST', 'OUTSIDE_HOURS', 'CUSTOMER_OVERLAP'].includes(result.code)) {
+        state.time = '';
+        refreshAll();
+        renderNextSlot();
+        focusFirstError({ time: true });
+      } else {
+        focusFirstError(result.errors || {});
+      }
+      return;
+    }
+
+    clearErrors();
+    notifyShop(result.booking);
+    showConfirmation(result.booking);
+    renderNextSlot();
+    refreshAll();
+  }
+
+  /* ----- Potvrdenie ----- */
+
+  function detailRow(label, value) {
+    return h('div', {}, h('dt', { text: label }), h('dd', { text: value }));
+  }
+
+  function bookingMailText(b) {
+    return [
+      'Nová rezervácia ' + b.id,
+      '',
+      'Služba: ' + b.serviceName,
+      'Barber: ' + b.barberName,
+      'Dátum: ' + fmtDateLong(b.date),
+      'Čas: ' + fmtTime(b.time) + ' – ' + fmtTime(b.endTime),
+      'Cena na mieste: ' + fmtPrice(b.price),
+      '',
+      'Meno: ' + b.customer.name,
+      'E-mail: ' + b.customer.email,
+      'Telefón: ' + b.customer.phone,
+      b.note ? 'Poznámka: ' + b.note : ''
+    ].join('\n');
+  }
+
+  function bookingMailto(b) {
+    return 'mailto:' + Data.SHOP.email + '?subject=' + encodeURIComponent('Rezervácia ' + b.id + ' – ' + b.serviceName) + '&body=' + encodeURIComponent(bookingMailText(b));
+  }
+
+  /** Voliteľné automatické upozornenie salónu (Data.SHOP.notifyUrl); chyba nikdy nezruší rezerváciu. */
+  function notifyShop(b) {
+    if (!Data.SHOP.notifyUrl || typeof fetch !== 'function') return;
+    try {
+      const body = new URLSearchParams({ subject: 'Rezervácia ' + b.id + ' – ' + b.serviceName, email: b.customer.email, message: bookingMailText(b) });
+      fetch(Data.SHOP.notifyUrl, { method: 'POST', headers: { Accept: 'application/json' }, body }).catch(function () {});
+    } catch (e) { /* ignorované */ }
+  }
+
+  function showConfirmation(b) {
+    els.confirmation.replaceChildren(
+      h('h3', { text: 'Rezervácia je potvrdená' }),
+      h('p', {
+        class: 'confirmation-lead',
+        text: 'Ďakujeme, ' + b.customer.name.split(' ')[0] + '. V demo verzii sa e-mail neposiela automaticky. Uložte si číslo rezervácie, pridajte termín do kalendára alebo pošlite rezerváciu salónu e-mailom.',
+      }),
+      h(
+        'dl',
+        { class: 'confirmation-grid' },
+        detailRow('Číslo rezervácie', b.id),
+        detailRow('Služba', b.serviceName),
+        detailRow('Barber', b.barberName),
+        detailRow('Dátum', capitalize(fmtDateLong(b.date))),
+        detailRow('Čas', `${fmtTime(b.time)} – ${fmtTime(b.endTime)}`),
+        detailRow('Cena na mieste', fmtPrice(b.price)),
+        detailRow('Meno', b.customer.name),
+        detailRow('E-mail', b.customer.email),
+        detailRow('Telefón', b.customer.phone),
+        b.note ? detailRow('Poznámka', b.note) : null
+      ),
+      h(
+        'div',
+        { class: 'confirmation-actions' },
+        h('a', { class: 'btn btn-orange', id: 'add-to-calendar', href: Logic.googleCalendarUrl(b), target: '_blank', rel: 'noopener noreferrer', text: 'Pridať do Google kalendára' }),
+        h('a', { class: 'btn btn-ghost', id: 'mail-booking', href: bookingMailto(b), text: 'Poslať rezerváciu salónu e-mailom' }),
+        h('button', { type: 'button', class: 'btn btn-ghost', id: 'show-my-bookings', text: 'Zobraziť moje rezervácie', onclick: () => openMyBookings(b.customer.email) }),
+        h('button', { type: 'button', class: 'btn btn-ghost', id: 'new-booking', text: 'Rezervovať ďalší termín', onclick: newBooking })
+      )
+    );
+    els.layout.hidden = true;
+    els.confirmation.hidden = false;
+    els.confirmation.focus();
+    els.confirmation.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showForm() {
+    els.confirmation.hidden = true;
+    els.layout.hidden = false;
+  }
+
+  /** Nová rezervácia: údaje o zákazníkovi ostanú predvyplnené, výber termínu sa vymaže. */
+  function newBooking() {
+    state.serviceId = state.barberId = state.date = state.time = '';
+    els.service.value = '';
+    els.date.value = '';
+    els.note.value = '';
+    els.noteCount.textContent = '0 / ' + Data.RULES.maxNoteLength + ' znakov';
+    clearErrors();
+    showForm();
+    refreshAll();
+    $('#rezervacia').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Moje rezervácie                                                     */
+  /* ------------------------------------------------------------------ */
+
+  function bookingCard(b) {
+    const t = now();
+    const status = Logic.getDisplayStatus(b, t);
+    const actions = h('div', { class: 'booking-actions' });
+
+    const showCancelButton = () =>
+      actions.replaceChildren(
+        h('button', {
+          type: 'button',
+          class: 'btn btn-danger btn-small',
+          dataset: { action: 'cancel' },
+          text: 'Zrušiť rezerváciu',
+          onclick: showCancelConfirm,
+        })
+      );
+
+    const showCancelConfirm = () =>
+      actions.replaceChildren(
+        h(
+          'div',
+          { class: 'cancel-confirm', role: 'group', 'aria-label': 'Potvrdenie zrušenia' },
+          h('p', { text: 'Naozaj chcete zrušiť túto rezerváciu?' }),
+          h('button', { type: 'button', class: 'btn btn-danger btn-small', dataset: { action: 'confirm-cancel' }, text: 'Áno, zrušiť', onclick: () => cancelBooking(b) }),
+          h('button', { type: 'button', class: 'btn btn-ghost btn-small', dataset: { action: 'keep' }, text: 'Ponechať', onclick: showCancelButton })
+        )
+      );
+
+    if (Logic.canCancel(b, t)) showCancelButton();
+    else if (status === 'confirmed') actions.append(h('p', { class: 'booking-sub', text: 'Termín sa už začal, zrušiť ho nie je možné.' }));
+
+    return h(
+      'article',
+      { class: 'booking-card is-' + status, tabindex: '-1', dataset: { id: b.id, status } },
+      h(
+        'div',
+        { class: 'booking-main' },
+        h('h4', { text: b.serviceName }),
+        h('p', { class: 'booking-sub', text: 'Barber: ' + b.barberName }),
+        h('p', { class: 'booking-sub', text: 'Číslo rezervácie: ' + b.id })
+      ),
+      h(
+        'div',
+        { class: 'booking-when-wrap' },
+        h('p', { class: 'booking-when', text: capitalize(fmtDateLong(b.date)) }),
+        h('p', { class: 'booking-sub', text: `${fmtTime(b.time)} – ${fmtTime(b.endTime)} (${fmtDuration(b.duration)})` })
+      ),
+      h(
+        'div',
+        { class: 'booking-side' },
+        h('span', { class: 'status status-' + status, text: STATUS_LABELS[status] }),
+        h('p', { class: 'booking-price', text: fmtPrice(b.price) })
+      ),
+      actions
+    );
+  }
+
+  function renderMyBookings() {
+    if (!state.lookupQuery) {
+      els.results.replaceChildren();
+      return;
+    }
+    const list = bookings.find(state.lookupQuery);
+    if (!list.length) {
+      els.results.replaceChildren(
+        h(
+          'p',
+          { class: 'results-empty', dataset: { empty: 'true' } },
+          'Pre „' + state.lookupQuery + '“ sme nenašli žiadne rezervácie. Skontrolujte zápis e-mailu alebo čísla, alebo si ',
+          h('a', { href: '#rezervacia', text: 'vyberte nový termín' }),
+          '.'
+        )
+      );
+      return;
+    }
+
+    const t = now();
+    const upcoming = list.filter((b) => Logic.getDisplayStatus(b, t) === 'confirmed');
+    const history = list.filter((b) => Logic.getDisplayStatus(b, t) !== 'confirmed').reverse();
+    const nodes = [];
+    nodes.push(h('h3', { class: 'results-group-title', text: `Nadchádzajúce rezervácie (${upcoming.length})` }));
+    nodes.push(
+      upcoming.length
+        ? h('div', { class: 'booking-list', dataset: { group: 'upcoming' } }, upcoming.map(bookingCard))
+        : h('p', { class: 'results-empty', text: 'Nemáte žiadne nadchádzajúce rezervácie.' })
+    );
+    if (history.length) {
+      nodes.push(h('h3', { class: 'results-group-title', text: `História (${history.length})` }));
+      nodes.push(h('div', { class: 'booking-list', dataset: { group: 'history' } }, history.map(bookingCard)));
+    }
+    els.results.replaceChildren(...nodes);
+  }
+
+  function cancelBooking(b) {
+    const result = bookings.cancel(b.id, state.lookupQuery);
+    if (!result.ok) {
+      showToast(result.message);
+      renderMyBookings();
+      return;
+    }
+    renderMyBookings();
+    refreshAll(); // uvoľnený termín sa ihneď zobrazí vo formulári
+    renderNextSlot();
+    showToast('Rezervácia bola zrušená a termín je opäť voľný.');
+    const card = $(`.booking-card[data-id="${b.id}"]`, els.results);
+    if (card) card.focus();
+  }
+
+  function onLookup(event) {
+    event.preventDefault();
+    const query = els.lookupInput.value.trim();
+    const errorEl = $('#lookup-error');
+    errorEl.textContent = '';
+    els.lookupInput.removeAttribute('aria-invalid');
+
+    if (!query) {
+      errorEl.textContent = 'Zadajte e-mail alebo telefónne číslo.';
+    } else if (!Logic.parseContactQuery(query)) {
+      errorEl.textContent = 'Zadajte platný e-mail alebo telefónne číslo, napríklad meno@domena.sk alebo 0900 123 456.';
+    }
+    if (errorEl.textContent) {
+      els.lookupInput.setAttribute('aria-invalid', 'true');
+      state.lookupQuery = '';
+      els.results.replaceChildren();
+      els.lookupInput.focus();
+      return;
+    }
+    state.lookupQuery = query;
+    renderMyBookings();
+  }
+
+  function openMyBookings(query) {
+    els.lookupInput.value = query;
+    els.lookupForm.requestSubmit ? els.lookupForm.requestSubmit() : onLookup(new Event('submit', { cancelable: true }));
+    $('#moje-rezervacie').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Navigácia                                                           */
+  /* ------------------------------------------------------------------ */
+
+  function initNav() {
+    // hlavička je cez hero priehľadná a po posunutí dostane tmavé pozadie
+    const header = $('#site-header');
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    const toggle = $('.nav-toggle');
+    const nav = $('#site-nav');
+    const setOpen = (open) => {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    nav.addEventListener('click', (e) => {
+      if (e.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // zvýraznenie sekcie, ktorá je práve v strede obrazovky
+    if ('IntersectionObserver' in window) {
+      const links = $$('.site-nav li a');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            links.forEach((a) => {
+              const active = a.getAttribute('href') === '#' + entry.target.id;
+              a.classList.toggle('is-active', active);
+              if (active) a.setAttribute('aria-current', 'true');
+              else a.removeAttribute('aria-current');
+            });
+          });
+        },
+        { rootMargin: '-45% 0px -50% 0px' }
+      );
+      $$('main section[id]').forEach((section) => observer.observe(section));
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Inicializácia                                                       */
+  /* ------------------------------------------------------------------ */
+
+  function init() {
+    renderServices();
+    renderFeatured();
+    renderBarbers();
+    renderWorks();
+    renderFormChoices();
+    initQuickCard();
+    renderOpeningInfo();
+    $('#year').textContent = now().getFullYear();
+
+    // rozsah dátumu: dnes až 60 dní dopredu
+    const today = Logic.toISODate(now());
+    els.date.min = today;
+    els.date.max = Logic.addDays(today, Data.RULES.maxDaysAhead);
+
+    els.service.addEventListener('change', () => {
+      state.serviceId = els.service.value;
+      clearError('service');
+      refreshAll();
+    });
+
+    els.barberChoices.addEventListener('change', (e) => {
+      if (e.target.name !== 'barber') return;
+      state.barberId = e.target.value;
+      clearError('barber');
+      refreshAll();
+    });
+
+    els.date.addEventListener('change', () => {
+      state.date = els.date.value;
+      clearError('date');
+      refreshAll();
+    });
+
+    els.slots.addEventListener('change', (e) => {
+      if (e.target.name !== 'time') return;
+      state.time = e.target.value;
+      clearError('time');
+      updateSlip();
+    });
+
+    // živá kontrola textových polí
+    ['name', 'email', 'phone', 'note'].forEach((field) => {
+      const control = els[field];
+      control.addEventListener('blur', () => {
+        if (control.value.trim()) validateField(field);
+      });
+      control.addEventListener('input', () => {
+        if (control.getAttribute('aria-invalid') === 'true') validateField(field);
+      });
+    });
+    els.consent.addEventListener('change', () => {
+      if (els.consent.checked) clearError('consent');
+    });
+    els.note.addEventListener('input', () => {
+      els.noteCount.textContent = `${els.note.value.length} / ${Data.RULES.maxNoteLength} znakov`;
+    });
+
+    els.form.addEventListener('submit', onSubmit);
+    els.lookupForm.addEventListener('submit', onLookup);
+    $('#use-demo').addEventListener('click', () => openMyBookings(Data.DEMO_CUSTOMER.email));
+
+    // obnovenie demo dát s potvrdením priamo na stránke (okno confirm nie je všade dostupné)
+    const resetButton = $('#reset-demo');
+    const resetBox = $('#reset-confirm');
+    const toggleReset = (open) => {
+      resetBox.hidden = !open;
+      resetButton.hidden = open;
+      (open ? $('#reset-no') : resetButton).focus();
+    };
+    resetButton.addEventListener('click', () => toggleReset(true));
+    $('#reset-no').addEventListener('click', () => toggleReset(false));
+    $('#reset-yes').addEventListener('click', () => {
+      bookings.reset();
+      state.lookupQuery = '';
+      els.lookupInput.value = '';
+      els.results.replaceChildren();
+      showForm();
+      refreshAll();
+      renderNextSlot();
+      toggleReset(false);
+      showToast('Demo dáta boli obnovené.');
+    });
+
+    // zmeny z inej karty prehliadača
+    window.addEventListener('storage', (e) => {
+      if (e.key !== Store.STORAGE_KEY) return;
+      refreshSlots();
+      renderNextSlot();
+      renderMyBookings();
+    });
+
+    initNav();
+    refreshAll();
+    renderNextSlot();
+  }
+
+  init();
+})();
+
+</script>
 </body>
 </html>
