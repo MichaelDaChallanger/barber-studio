@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barber Studio, barber shop s online rezerváciou</title>
+  <meta name="description" content="Barber Studio: pánske strihy, úprava brady a holenie britvou. Pozrite si cenník, vyberte si barbera a rezervujte termín online.">
+  <meta name="theme-color" content="#2a211b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a211b'/%3E%3Crect x='11' y='5' width='10' height='22' rx='5' fill='%23f2a05a'/%3E%3Cpath d='M11 11l10-4M11 17l10-4M11 23l10-4' stroke='%232a211b' stroke-width='2.4'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body id="top">
+  <a class="skip-link" href="#hlavny-obsah">Preskočiť na obsah</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Barber Studio, domov">
+        <svg class="brand-pole" viewBox="0 0 24 40" aria-hidden="true" focusable="false">
+          <defs><clipPath id="pole-clip"><rect x="5" y="4" width="14" height="32" rx="7"/></clipPath></defs>
+          <g clip-path="url(#pole-clip)">
+            <rect x="5" y="4" width="14" height="32" fill="#f3ece0"/>
+            <path d="M0 12L24 2M0 22L24 12M0 32L24 22M0 42L24 32" stroke="#b5483a" stroke-width="4"/>
+            <path d="M0 7L24 -3M0 17L24 7M0 27L24 17M0 37L24 27" stroke="#f2a05a" stroke-width="2"/>
+          </g>
+        </svg>
+        <span class="brand-name">Barber Studio</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Hlavná navigácia">
+        <ul>
+          <li><a href="#o-nas">O nás</a></li>
+          <li><a href="#sluzby">Služby</a></li>
+          <li><a href="#barberi">Barberi</a></li>
+          <li><a href="#rezervacia">Rezervácia</a></li>
+          <li><a href="#moje-rezervacie">Moje rezervácie</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+        <a class="btn btn-orange btn-small nav-cta" href="#rezervacia">Rezervovať termín</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="hlavny-obsah">
+    <noscript>
+      <p class="noscript-note">Rezervačný systém potrebuje zapnutý JavaScript. Zavolajte nám na +421 900 123 456.</p>
+    </noscript>
+
+    <!-- HERO -->
+    <section class="hero theme-dark" aria-labelledby="hero-title">
+      <div class="hero-lights" aria-hidden="true"></div>
+
+      <div class="container hero-grid">
+        <div class="quick" role="group" aria-labelledby="quick-title">
+          <h2 class="quick-title" id="quick-title">Rezervovať termín</h2>
+          <div class="quick-fields">
+            <div>
+              <label class="visually-hidden" for="quick-service">Služba</label>
+              <select id="quick-service">
+                <option value="">Vyberte službu</option>
+              </select>
+            </div>
+            <div>
+              <label class="visually-hidden" for="quick-barber">Barber</label>
+              <select id="quick-barber">
+                <option value="">Vyberte barbera</option>
+              </select>
+            </div>
+          </div>
+          <a class="btn btn-orange btn-block" id="quick-go" href="#rezervacia">Rezervovať termín</a>
+
+          <aside class="next-slot" id="next-slot" aria-labelledby="next-slot-title" hidden>
+            <p class="next-slot-label" id="next-slot-title">Najbližší voľný termín</p>
+            <p class="next-slot-when" id="next-slot-when"></p>
+            <p class="next-slot-detail" id="next-slot-detail"></p>
+            <button class="btn btn-outline-light btn-small" type="button" id="next-slot-book">Rezervovať tento termín</button>
+          </aside>
+        </div>
+
+        <div class="pole" aria-hidden="true">
+          <span class="pole-cap pole-cap-top"></span>
+          <span class="pole-glass"><span class="pole-stripes"></span></span>
+          <span class="pole-cap pole-cap-bottom"></span>
+        </div>
+
+        <p class="hero-lead">Klasické remeslo, presný strih a termín, ktorý máte istý. Vyberte si službu, barbera a čas, rezervácia zaberie menej ako minútu.</p>
+
+        <div class="hero-headline">
+          <h1 id="hero-title">Poriadny strih. Bez čakania.</h1>
+          <p class="open-now" id="open-now" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- O NÁS -->
+    <section class="section theme-dark band" id="o-nas" aria-labelledby="about-title">
+      <div class="container about-grid">
+        <div class="about-intro">
+          <h2 id="about-title">Barber shop pre ľudí, ktorí si potrpia na detaily</h2>
+          <p>Barber Studio je malý holičský salón v centre mesta. Strihy robíme pomaly a poriadne: s konzultáciou, horúcim uterákom a ručným dokončením.</p>
+          <p>Nikam sa neponáhľame, a predsa nečakáte. Každý termín je vyhradený iba pre vás, takže si v kresle užijete celý čas, ktorý ste si rezervovali.</p>
+          <a class="btn btn-orange" href="#rezervacia">Rezervovať termín</a>
+        </div>
+
+        <ul class="features">
+          <li>
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <div><h3>Vyhradený čas</h3><p>Jeden termín, jeden zákazník. Nestojíte vo fronte.</p></div>
+          </li>
+          <li>
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6.5" r="2.6"/><circle cx="6" cy="17.5" r="2.6"/><path d="M8.2 8l12 9.5M8.2 16l12-9.5"/></svg></span>
+            <div><h3>Skúsení barberi</h3><p>Traja majstri s praxou od šiestich do dvanástich rokov.</p></div>
+          </li>
+          <li>
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15.5l-1.8-4.7L5.5 9l4.7-1.3z"/><path d="M18.5 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></span>
+            <div><h3>Čistota na prvom mieste</h3><p>Nástroje po každom zákazníkovi dezinfikujeme a čepele vymieňame.</p></div>
+          </li>
+          <li>
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v3l1.5 2.5V20a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V8.5L9 6z"/><path d="M8 13h7"/></svg></span>
+            <div><h3>Kvalitná kozmetika</h3><p>Pracujeme s profesionálnymi produktmi na vlasy a bradu.</p></div>
+          </li>
+          <li>
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3.5v2M12 3.5v2"/></svg></span>
+            <div><h3>Pokojná atmosféra</h3><p>Kožené kreslá, dobrá káva a hudba, ktorá neruší rozhovor.</p></div>
+          </li>
+          <li>
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8.5 15l2.2 2.2 4.3-4.4"/></svg></span>
+            <div><h3>Rezervácia online</h3><p>Termín vyberiete kedykoľvek a zrušíte jedným kliknutím.</p></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SLUŽBY A CENNÍK -->
+    <section class="section theme-beige" id="sluzby" aria-labelledby="services-title">
+      <div class="container services-grid">
+        <aside class="featured" id="featured-service" aria-label="Odporúčaná služba"></aside>
+
+        <div class="services-main">
+          <div class="section-head">
+            <h2 id="services-title">Služby a cenník</h2>
+            <p>Ceny sú v eurách. Čas pri službe je dĺžka termínu, ktorú si v kalendári rezervujeme len pre vás.</p>
+          </div>
+          <ul class="menu" id="services-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- BARBERI -->
+    <section class="section theme-white" id="barberi" aria-labelledby="barbers-title">
+      <div class="container">
+        <div class="section-head section-head-center">
+          <h2 id="barbers-title">Barberi</h2>
+          <p>Vyberte si majstra podľa štýlu, alebo podľa toho, kto má voľný čas.</p>
+        </div>
+        <div class="barbers" id="barbers-list"></div>
+      </div>
+    </section>
+
+    <!-- REZERVÁCIA -->
+    <section class="section theme-beige" id="rezervacia" aria-labelledby="booking-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="booking-title">Rezervácia termínu</h2>
+          <p>Voľné termíny vidíte okamžite. Platíte až na mieste, online platba nie je potrebná.</p>
+        </div>
+
+        <div class="booking-layout">
+          <form id="booking-form" class="booking-form" novalidate>
+            <fieldset class="step">
+              <legend><span class="step-no" aria-hidden="true">1</span>Služba</legend>
+              <div class="field">
+                <label for="service">Vyberte službu</label>
+                <select id="service" name="service" required aria-describedby="service-error">
+                  <option value="">Vyberte službu</option>
+                </select>
+                <p class="field-error" id="service-error" role="alert"></p>
+              </div>
+            </fieldset>
+
+            <fieldset class="step">
+              <legend><span class="step-no" aria-hidden="true">2</span>Barber</legend>
+              <div class="barber-choices" id="barber-choices" role="radiogroup" aria-describedby="barber-error"></div>
+              <p class="field-error" id="barber-error" role="alert"></p>
+            </fieldset>
+
+            <fieldset class="step">
+              <legend><span class="step-no" aria-hidden="true">3</span>Dátum</legend>
+              <div class="field">
+                <label for="date">Vyberte dátum</label>
+                <input type="date" id="date" name="date" required aria-describedby="date-error date-hint">
+                <p class="field-hint" id="date-hint">V nedeľu máme zatvorené, v sobotu otvárame od 9:00 do 14:00.</p>
+                <p class="field-error" id="date-error" role="alert"></p>
+              </div>
+              <div class="date-chips" id="date-chips" aria-label="Najbližšie voľné dni"></div>
+            </fieldset>
+
+            <fieldset class="step">
+              <legend><span class="step-no" aria-hidden="true">4</span>Čas</legend>
+              <p class="slots-message" id="slots-message" aria-live="polite">Najprv vyberte službu, barbera a dátum.</p>
+              <div class="slots" id="time-slots" role="radiogroup" aria-label="Dostupné časy" aria-describedby="time-error"></div>
+              <ul class="legend" id="slots-legend" hidden>
+                <li><span class="swatch swatch-free"></span>Voľné</li>
+                <li><span class="swatch swatch-booked"></span>Obsadené</li>
+                <li><span class="swatch swatch-off"></span>Nedostupné</li>
+              </ul>
+              <p class="field-error" id="time-error" role="alert"></p>
+            </fieldset>
+
+            <fieldset class="step">
+              <legend><span class="step-no" aria-hidden="true">5</span>Vaše údaje</legend>
+              <div class="field-row">
+                <div class="field">
+                  <label for="name">Meno a priezvisko</label>
+                  <input type="text" id="name" name="name" autocomplete="name" required maxlength="80" aria-describedby="name-error">
+                  <p class="field-error" id="name-error" role="alert"></p>
+                </div>
+                <div class="field">
+                  <label for="email">E-mail</label>
+                  <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="email-error">
+                  <p class="field-error" id="email-error" role="alert"></p>
+                </div>
+              </div>
+              <div class="field">
+                <label for="phone">Telefónne číslo</label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0900 123 456" aria-describedby="phone-error">
+                <p class="field-error" id="phone-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="note">Poznámka <span class="optional">(voliteľné)</span></label>
+                <textarea id="note" name="note" rows="3" maxlength="300" aria-describedby="note-count note-error"></textarea>
+                <p class="field-hint" id="note-count">0 / 300 znakov</p>
+                <p class="field-error" id="note-error" role="alert"></p>
+              </div>
+              <div class="field field-check">
+                <input type="checkbox" id="consent" name="consent" aria-describedby="consent-error">
+                <label for="consent">Súhlasím so spracovaním údajov na účely tejto rezervácie.</label>
+                <p class="field-error" id="consent-error" role="alert"></p>
+              </div>
+            </fieldset>
+
+            <p class="form-error" id="form-error" role="alert"></p>
+            <button class="btn btn-orange btn-large btn-block" type="submit" id="submit-booking">Rezervovať termín</button>
+          </form>
+
+          <aside class="slip" id="slip" aria-labelledby="slip-title">
+            <h3 id="slip-title">Vaša rezervácia</h3>
+            <dl class="slip-list">
+              <div><dt>Služba</dt><dd id="slip-service" data-empty="Zatiaľ nevybraná">Zatiaľ nevybraná</dd></div>
+              <div><dt>Barber</dt><dd id="slip-barber" data-empty="Zatiaľ nevybraný">Zatiaľ nevybraný</dd></div>
+              <div><dt>Dátum</dt><dd id="slip-date" data-empty="Zatiaľ nevybraný">Zatiaľ nevybraný</dd></div>
+              <div><dt>Čas</dt><dd id="slip-time" data-empty="Zatiaľ nevybraný">Zatiaľ nevybraný</dd></div>
+            </dl>
+            <p class="slip-total"><span>Cena na mieste</span><strong id="slip-price">0&nbsp;€</strong></p>
+          </aside>
+        </div>
+
+        <!-- Potvrdenie rezervácie -->
+        <div class="confirmation" id="confirmation" tabindex="-1" role="status" hidden></div>
+      </div>
+    </section>
+
+    <!-- MOJE REZERVÁCIE -->
+    <section class="section theme-white" id="moje-rezervacie" aria-labelledby="mine-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="mine-title">Moje rezervácie</h2>
+          <p>Zadajte e-mail alebo telefónne číslo, s ktorým ste rezervovali. Tu rezerváciu aj zrušíte.</p>
+        </div>
+
+        <form class="lookup" id="lookup-form" novalidate>
+          <div class="field">
+            <label for="lookup-input">E-mail alebo telefón</label>
+            <input type="text" id="lookup-input" name="lookup" autocomplete="email" aria-describedby="lookup-error lookup-hint">
+            <p class="field-hint" id="lookup-hint">Vyskúšajte demo účet: <button class="link-button" type="button" id="use-demo">demo@example.com</button></p>
+            <p class="field-error" id="lookup-error" role="alert"></p>
+          </div>
+          <button class="btn btn-dark" type="submit">Zobraziť rezervácie</button>
+        </form>
+
+        <div class="results" id="my-bookings-results" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- KONTAKT -->
+    <section class="section theme-dark band" id="kontakt" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="contact-main">
+          <h2 id="contact-title">Kontakt a otváracie hodiny</h2>
+          <p class="contact-lead">Ak termín nenájdete, zavolajte nám. Radi nájdeme riešenie.</p>
+
+          <table class="hours" id="hours-table">
+            <caption class="visually-hidden">Otváracie hodiny</caption>
+            <tbody>
+              <tr data-day="1"><th scope="row">Pondelok</th><td>9:00 – 19:00</td></tr>
+              <tr data-day="2"><th scope="row">Utorok</th><td>9:00 – 19:00</td></tr>
+              <tr data-day="3"><th scope="row">Streda</th><td>9:00 – 19:00</td></tr>
+              <tr data-day="4"><th scope="row">Štvrtok</th><td>9:00 – 19:00</td></tr>
+              <tr data-day="5"><th scope="row">Piatok</th><td>9:00 – 19:00</td></tr>
+              <tr data-day="6"><th scope="row">Sobota</th><td>9:00 – 14:00</td></tr>
+              <tr data-day="0"><th scope="row">Nedeľa</th><td>Zatvorené</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a class="map-wrap" href="https://www.openstreetmap.org/?mlat=48.1486&amp;mlon=17.1077#map=17/48.1486/17.1077" target="_blank" rel="noopener noreferrer" aria-label="Otvoriť mapu: Obchodná 12, Bratislava (otvorí sa v novom okne)">
+          <svg class="map-art" viewBox="0 0 480 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Schematická mapa okolia Barber Studio">
+            <rect width="480" height="400" fill="#5b4f47"/>
+            <path d="M292 262q44-34 104-12l34 74q-64 44-138 10z" fill="#675a50"/>
+            <path d="M-20 338C92 304 170 384 282 354S430 322 500 366" fill="none" stroke="#483d36" stroke-width="36" stroke-linecap="round"/>
+            <g fill="#695c53">
+              <rect x="20" y="28" width="92" height="64" rx="7"/><rect x="132" y="22" width="84" height="76" rx="7"/>
+              <rect x="246" y="28" width="86" height="70" rx="7"/><rect x="356" y="30" width="98" height="62" rx="7"/>
+              <rect x="22" y="132" width="86" height="70" rx="7"/><rect x="132" y="126" width="92" height="76" rx="7"/>
+              <rect x="268" y="118" width="62" height="80" rx="7"/><rect x="352" y="124" width="100" height="70" rx="7"/>
+              <rect x="30" y="236" width="82" height="60" rx="7"/><rect x="138" y="232" width="86" height="62" rx="7"/>
+            </g>
+            <g fill="none" stroke="#7b6d63" stroke-linecap="round">
+              <path d="M-10 108L490 120M-10 214L490 196" stroke-width="12"/>
+              <path d="M122-10L128 410M240-10L252 410M342-10L338 410" stroke-width="12"/>
+              <path d="M-10 168L490 160M60-10L64 300M430-10L436 300" stroke-width="5"/>
+            </g>
+            <g transform="translate(246 158)">
+              <circle r="30" fill="#f2a05a" opacity=".22"/>
+              <path d="M0 24C-14 6-19 0-19-9a19 19 0 0 1 38 0c0 9-5 15-19 33z" fill="#f2a05a"/>
+              <circle cy="-9" r="6.5" fill="#2a1a0c"/>
+            </g>
+          </svg>
+          <span class="map-label">Otvoriť mapu</span>
+        </a>
+
+        <address class="contact-tiles">
+          <div class="contact-tile">
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.800 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+            <div>
+              <p class="contact-key">Adresa</p>
+              <p class="contact-value">Obchodná 12<br>811 06 Bratislava</p>
+              <a class="contact-link" href="https://www.openstreetmap.org/?mlat=48.1486&amp;mlon=17.1077#map=17/48.1486/17.1077" target="_blank" rel="noopener noreferrer">Otvoriť mapu v novom okne</a>
+            </div>
+          </div>
+          <div class="contact-tile">
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span>
+            <div>
+              <p class="contact-key">Telefón</p>
+              <p class="contact-value"><a href="tel:+421900123456">+421 900 123 456</a></p>
+            </div>
+          </div>
+          <div class="contact-tile">
+            <span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span>
+            <div>
+              <p class="contact-key">E-mail</p>
+              <p class="contact-value"><a href="mailto:barbershopmn17@gmail.com">barbershopmn17@gmail.com</a></p>
+            </div>
+          </div>
+        </address>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <p class="footer-name">Barber Studio</p>
+        <p class="footer-copy">&copy; <span id="year">2026</span> Barber Studio. Všetky práva vyhradené.</p>
+        <p class="footer-demo">Demo verzia: rezervácie sa ukladajú iba vo vašom prehliadači.
+          <button class="link-button" type="button" id="reset-demo">Obnoviť demo dáta</button>
+          <span class="reset-confirm" id="reset-confirm" role="group" aria-label="Potvrdenie obnovenia" hidden>
+            Naozaj obnoviť? Vaše rezervácie sa odstránia.
+            <button class="link-button" type="button" id="reset-yes">Áno, obnoviť</button>
+            <button class="link-button" type="button" id="reset-no">Nie</button>
+          </span>
+        </p>
+      </div>
+
+      <nav aria-label="Rýchle odkazy">
+        <p class="footer-title">Rýchle odkazy</p>
+        <ul class="footer-links">
+          <li><a href="#o-nas">O nás</a></li>
+          <li><a href="#sluzby">Služby</a></li>
+          <li><a href="#barberi">Barberi</a></li>
+          <li><a href="#rezervacia">Rezervácia</a></li>
+          <li><a href="#moje-rezervacie">Moje rezervácie</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-hours">
+        <p class="footer-title">Otváracie hodiny</p>
+        <p>Pondelok až piatok 9:00 – 19:00<br>Sobota 9:00 – 14:00<br>Nedeľa zatvorené</p>
+        <a class="btn btn-orange btn-small" href="#rezervacia">Rezervovať termín</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/booking-logic.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
